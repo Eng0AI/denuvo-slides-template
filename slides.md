@@ -23,14 +23,6 @@ mdc: true
 
 ---
 
-## Agenda
-
-- Denuvo, what's that?
-- Let's crack the game!
-- Does performance suck?
-
----
-
 ## Who am I?
 
 <div grid="~ cols-2 gap-2" m="t-2">
@@ -41,6 +33,15 @@ mdc: true
 
 <img  src="./images/me.png" />
 </div>
+
+---
+
+## Agenda
+
+- Understanding Denuvo
+- The Cracking Strategy
+- Technical Analysis
+- Performance Analysis
 
 
 ---
@@ -94,23 +95,33 @@ sequenceDiagram
 
 ---
 
-## Bad token
+## Why is Denuvo so strong?
 
-![rounded](./images/bad-token.png)
+- Protection is unique per game
+  - Different fingerprints, different patterns, ... 
+- Usually games are packed when protected
+- Denuvo doesn't pack
+- Instead code is lifted and virtualized in a VM (not reversed)
+-  sequences are inserted that validate the fingerprint (likely decryption)
+- this causes tight coupling of game and denuvo code --> hard to separate
+- thousands of validations require thousands of hooks
 
 ---
 
+
 # Let's crack the game!
 
-Two ways:
+**Two Possible Approaches**
+1. Patch and reverse all decryptions --> insane amount of work
+2. Method 2: Fingerprint simulation --> chosen approach (empress also chose that one)
 
-1. Patch and reverse all decryptions
-2. Find and patch fingerprint to simulate other PC
+**Why Fingerprint Simulation?**
+- Goal: mimic different PC with a valid token
+- Find all fingerprints
+- Patch all fingerprints to mimic other PC
+- Run game with token from other PC
 
---> I chose 2.
-
-So the goal is to find all the features denuvo uses to generate a fingerprint
-Then to patch those features to mimic a different PC (with valid denuvo token).
+![rounded](./images/bad-token.png)
 
 ---
 
@@ -154,17 +165,76 @@ Denuvo has two phases:
 Vary for each protected game
 HWL had 7 Major Categories
 
-1. KUSD values
-2. CPUID leaves
-3. API calls
-4. PEB values
-5. Environment peeks
-6. Inline syscalls
-7. Import integrity
+We'll explore how I found them, how I patched them
+
+--> actual number may vary
 
 ---
 
-## KUSER_SHARED_DATA
+## 1. API calls
+
+- GetVolumeInformationW
+- GetUserNameW
+- GetComputerNameW
+- CryptGetProvParam
+- CryptAcquireContextA
+- CryptAcquireContextW
+- CryptEnumProvidersW
+- ExpandEnvironmentStringsA &rarr; %COMPUTERNAME%
+
+--> Just hook them and return deterministic values
+
+---
+
+## 2. PEB
+
+- OSMajorVersion
+- OSMinorVersion
+- NumberOfProcessors
+- ImageSubsystemMajorVersion
+- ImageSubsystemMinorVersion
+
+--> Just unprotect and overwrite the data
+  - could have undesired consequences, overwriting the os version or number of cores
+
+---
+
+## 3. Environment Peeks
+
+PEB->ProcessParameters->Environment
+essentially random peeks into the env vars
+
+- 0x74
+- 0x123
+- 0x1d8
+- 0x291
+
+--> just unprotect and overwrite
+
+---
+transition: slide-up
+---
+
+## 4. CPUID
+
+- 1
+- 0x80000002
+- 0x80000003
+- 0x80000004
+
+- load hypervisor -> custom CPUID vmexit handler for hogwarts legacy
+- hides other features -> xgetbv -> patch leaf
+- other features conditionally active that i might not have needed to patch
+
+---
+transition: slide-down
+---
+
+### What is a hypervisor?
+
+---
+
+## 5. KUSER_SHARED_DATA
 
 - NtProductType
 - ActiveProcessorCount
@@ -178,83 +248,7 @@ HWL had 7 Major Categories
 
 ---
 
-## CPUID
-
-- 1
-- 0x80000002
-- 0x80000003
-- 0x80000004
-
----
-
-## API calls
-
-- GetVolumeInformationW
-- GetUserNameW
-- GetComputerNameW
-- CryptGetProvParam
-- CryptAcquireContextA
-- CryptAcquireContextW
-- CryptEnumProvidersW
-- ExpandEnvironmentStringsA &rarr; %COMPUTERNAME%
-
----
-
-## PEB
-
-- OSMajorVersion
-- OSMinorVersion
-- NumberOfProcessors
-- ImageSubsystemMajorVersion
-- ImageSubsystemMinorVersion
-
----
-
-## Environment Peeks
-
-PEB->ProcessParameters->Environment
-essentially random peeks into the env vars
-
-- 0x74
-- 0x123
-- 0x1d8
-- 0x291
-
----
-
-## Inline syscalls
-
-NtQuerySystemInformation &rarr; SystemBasicInformation
-
-ntdll exports are parsed to find syscall ID
-
----
-
-### Import integrity
-
-- --> Advapi32.dll
-- addresses of these values in IAT
-- changing them invalidates the token, so aslr changes on a reboot might invalidate it.
-
-* CryptAcquireContextA
-* CryptGetProvParam
-* GetUserNameW
-* GetVolumeInformationW
-
----
-
-## How to patch?
-
-Simple ones:
-
-- API calls -> hook them
-- PEB, Environment peeks -> data overwritten
-  - could have undesired consequences, overwriting the os version or number of cores
-- Import integrity -> trampolinee at fixed VA that redirects to the original value
-  - requires that the VA is available, which it should be
-- KUSD
-
-  - hard to patch
+--> hard to patch
   - find all places -> ideally HWBP + exception handler
   - non-linear stack -> wrote a debugger that attaches to the game and traces using HWBP
   - no guarantee i'll ever have all locations
@@ -265,12 +259,18 @@ Simple ones:
   - analyze and replicate memory source (scale-index-base)
   - replicate instruction (xor, add, mov, ...)
 
-- CPUID
 
-  - load hypervisor -> custom CPUID vmexit handler for hogwarts legacy
-  - patch xgetbv bits
+---
+transition: slide-up
+---
 
-- Inline syscalls
+## 6. Inline syscalls
+
+NtQuerySystemInformation &rarr; SystemBasicInformation
+
+ntdll exports are parsed to find syscall ID
+
+--> Inline syscalls
   - KUSD approach doesn't work -> mini integrity checks on instructions
     - instruction bytes are read and computed into other calculations
     - bytes need to stay intact
@@ -278,8 +278,53 @@ Simple ones:
       --> syscall hooks would've also worked, but my hypervisor couldn't do that at the time
 
 ---
+transition: slide-down
+---
 
-## Performance?
+## Hypervisor -> shadow hooking
+
+---
+
+# The last one... FML
+3 months...
+
+---
+
+### 7. Import integrity
+
+- --> Advapi32.dll
+- addresses of these values in IAT
+- changing them invalidates the token, so aslr changes on a reboot might invalidate it.
+
+* CryptAcquireContextA
+* CryptGetProvParam
+* GetUserNameW
+* GetVolumeInformationW
+
+--> insanely hard to find. why?
+-> regular memory access, nothing special
+-> game reads import table all the time, nothing suspicious
+-> usually import is used for execution, not in denuvo case
+
+--> simple to patch
+- trampolinee at fixed VA that redirects to the original value
+- requires that the VA is available, which it should be
+
+---
+
+## What does that leave us with?
+
+--> game runs, but semi stable - why?
+ -> sampling KUSD may miss values
+ -> patching CPUID can destabilize system
+ -> overwriting PEB can also destabilize 
+
+--> 2k hooks. can we do something with that? 
+-> we can analyze when the hooks are triggered to see in which situations the game executes denuvo code --> performance reasoning
+
+---
+
+## Performance Reasoning
 
 - For me, impossible to make detailed measurements --> I would need game without denuvo and with denuvo
 - denuvo changes a lot, each game is protected differently, even different versions of the game, each integration is different.
