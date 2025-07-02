@@ -1,17 +1,11 @@
 ---
 # You can also start simply with 'default'
-theme: seriph
+theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
+background: ./images/hwl.webp
 # some information about your slides (markdown enabled)
-title: Welcome to Slidev
-info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
-# apply unocss classes to the current slide
+title: Reverse Engineering Denuvo in Hogwarts Legacy
 class: text-center
 # https://sli.dev/features/drawing
 drawings:
@@ -25,614 +19,280 @@ mdc: true
 #  ogImage: https://cover.sli.dev
 ---
 
-# Welcome to Slidev
-
-Presentation slides for developers
-
-<div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
-  Press Space for next page <carbon:arrow-right />
-</div>
-
-<div class="abs-br m-6 text-xl">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="slidev-icon-btn">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" class="slidev-icon-btn">
-    <carbon:logo-github />
-  </a>
-</div>
-
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
-
----
-transition: fade-out
----
-
-# What is Slidev?
-
-Slidev is a slides maker and presenter designed for developers, consist of the following features
-
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - themes can be shared and re-used as npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embed Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev
-<br>
-<br>
-
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/features/slide-scope-style
--->
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
-
-<!--
-Here is another comment.
--->
-
----
-transition: slide-up
-level: 2
----
-
-# Navigation
-
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/ui#navigation-bar)
-
-## Keyboard Shortcuts
-
-|                                                     |                             |
-| --------------------------------------------------- | --------------------------- |
-| <kbd>right</kbd> / <kbd>space</kbd>                 | next animation or slide     |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd>                                       | previous slide              |
-| <kbd>down</kbd>                                     | next slide                  |
-
-<!-- https://sli.dev/guide/animations.html#click-animation -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-  alt=""
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
----
-layout: two-cols
-layoutClass: gap-16
----
-
-# Table of contents
-
-You can use the `Toc` component to generate a table of contents for your slides:
-
-```html
-<Toc minDepth="1" maxDepth="1" />
-```
-
-The title will be inferred from your slide content, or you can override it with `title` and `level` in your frontmatter.
-
-::right::
-
-<Toc text-sm minDepth="1" maxDepth="2" />
-
----
-layout: image-right
-image: https://cover.sli.dev
----
-
-# Code
-
-Use code snippets and get the highlighting directly, and even types hover!
-
-```ts [filename-example.ts] {all|4|6|6-7|9|all} twoslash
-// TwoSlash enables TypeScript hover information
-// and errors in markdown code blocks
-// More at https://shiki.style/packages/twoslash
-import { computed, ref } from 'vue'
-
-const count = ref(0)
-const doubled = computed(() => count.value * 2)
-
-doubled.value = 2
-```
-
-<arrow v-click="[4, 5]" x1="350" y1="310" x2="195" y2="342" color="#953" width="2" arrowSize="1" />
-
-<!-- This allow you to embed external code blocks -->
-<<< @/snippets/external.ts#snippet
-
-<!-- Footer -->
-
-[Learn more](https://sli.dev/features/line-highlighting)
-
-<!-- Inline style -->
-<style>
-.footnotes-sep {
-  @apply mt-5 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
-<!--
-Notes can also sync with clicks
-
-[click] This will be highlighted after the first click
-
-[click] Highlighted with `count = ref(0)`
-
-[click:3] Last click (skip two clicks)
--->
-
----
-level: 2
----
-
-# Shiki Magic Move
-
-Powered by [shiki-magic-move](https://shiki-magic-move.netlify.app/), Slidev supports animations across multiple code snippets.
-
-Add multiple code blocks and wrap them with <code>````md magic-move</code> (four backticks) to enable the magic move. For example:
-
-````md magic-move {lines: true}
-```ts {*|2|*}
-// step 1
-const author = reactive({
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-})
-```
-
-```ts {*|1-2|3-4|3-4,8}
-// step 2
-export default {
-  data() {
-    return {
-      author: {
-        name: 'John Doe',
-        books: [
-          'Vue 2 - Advanced Guide',
-          'Vue 3 - Basic Guide',
-          'Vue 4 - The Mystery'
-        ]
-      }
-    }
-  }
-}
-```
-
-```ts
-// step 3
-export default {
-  data: () => ({
-    author: {
-      name: 'John Doe',
-      books: [
-        'Vue 2 - Advanced Guide',
-        'Vue 3 - Basic Guide',
-        'Vue 4 - The Mystery'
-      ]
-    }
-  })
-}
-```
-
-Non-code blocks are ignored.
-
-```vue
-<!-- step 4 -->
-<script setup>
-const author = {
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-}
-</script>
-```
-````
+# Reverse Engineering<br>![denuvo-logo](./images/denuvo-logo.png) in ![hwl-logo](./images/hwl-logo.png)
 
 ---
 
-# Components
+## Agenda
 
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
+- Denuvo, what's that?
+- Let's crack the game!
+- Does performance suck?
 
 ---
-class: px-20
----
 
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
+## Who am I?
 
 <div grid="~ cols-2 gap-2" m="t-2">
 
-```yaml
----
-theme: default
----
-```
+- Maurice Heumann
+- Cybersecurity Engineer @ Thales
+- Twitter: @momo5502
 
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true" alt="">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true" alt="">
-
+<img  src="./images/me.png" />
 </div>
 
-Read more about [How to use a theme](https://sli.dev/guide/theme-addon#use-theme) and
-check out the [Awesome Themes Gallery](https://sli.dev/resources/theme-gallery).
 
 ---
 
-# Clicks Animations
+## What is Denuvo?
 
-You can add `v-click` to elements to add a click animation.
+<div grid="~ cols-2 gap-2" m="t-2">
 
-<div v-click>
-
-This shows up when you click the slide:
-
-```html
-<div v-click>This shows up when you click the slide.</div>
-```
-
-</div>
-
-<br>
-
-<v-click>
-
-The <span v-mark.red="3"><code>v-mark</code> directive</span>
-also allows you to add
-<span v-mark.circle.orange="4">inline marks</span>
-, powered by [Rough Notation](https://roughnotation.com/):
-
-```html
-<span v-mark.underline.orange>inline markers</span>
-```
-
-</v-click>
-
-<div mt-20 v-click>
-
-[Learn more](https://sli.dev/guide/animations#click-animation)
-
-</div>
-
----
-
-# Motions
-
-Motion animations are powered by [@vueuse/motion](https://motion.vueuse.org/), triggered by `v-motion` directive.
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }"
-  :click-3="{ x: 80 }"
-  :leave="{ x: 1000 }"
->
-  Slidev
-</div>
-```
-
-<div class="w-60 relative">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-square.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-circle.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-triangle.png"
-      alt=""
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 30, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn more](https://sli.dev/guide/animations.html#motion)
-
-</div>
-
----
-
-# LaTeX
-
-LaTeX is supported out-of-box. Powered by [KaTeX](https://katex.org/).
-
-<div h-3 />
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$ {1|3|all}
-\begin{aligned}
-\nabla \cdot \vec{E} &= \frac{\rho}{\varepsilon_0} \\
-\nabla \cdot \vec{B} &= 0 \\
-\nabla \times \vec{E} &= -\frac{\partial\vec{B}}{\partial t} \\
-\nabla \times \vec{B} &= \mu_0\vec{J} + \mu_0\varepsilon_0\frac{\partial\vec{E}}{\partial t}
-\end{aligned}
-$$
-
-[Learn more](https://sli.dev/features/latex)
-
----
-
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-4 gap-5 pt-4 -mb-6">
-
-```mermaid {scale: 0.5, alt: 'A simple sequence diagram'}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
+- Anti tamper solution by Irdeto
+- Protects existing DRM/licensing solutions
+  - e.g. Steam, Origin, ...
 
 ```mermaid
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectiveness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
+flowchart BT
+    game(🎮 Game Executable)
+    drm("🔒 DRM Layer (Steam)")
+    denuvo(🛡️ Denuvo Anti-Tamper)
+    drm --> game
+    denuvo --> drm
 ```
 
 </div>
 
-Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML Diagrams](https://sli.dev/features/plantuml)
-
----
-foo: bar
-dragPos:
-  square: 691,32,167,_,-16
 ---
 
-# Draggable Elements
+## How does it work?
 
-Double-click on the draggable elements to edit their positions.
+```mermaid
 
-<br>
-
-###### Directive Usage
-
-```md
-<img v-drag="'square'" src="https://sli.dev/logo.png">
+sequenceDiagram
+    participant Player
+    participant Denuvo as Denuvo Server
+    participant Steam as Steam Server
+    
+    Player->>Denuvo: Hardware Fingerprint + Steam Ticket
+    Denuvo->>Steam: Validate Steam Ticket
+    Steam->>Denuvo: Ticket OK
+    Denuvo->>Player: Generate Denuvo Token for Hardware Fingerprint
+    Player->>Player: Run Game with Ticket
 ```
 
-<br>
-
-###### Component Usage
-
-```md
-<v-drag text-3xl>
-  <div class="i-carbon:arrow-up" />
-  Use the `v-drag` component to have a draggable container!
-</v-drag>
-```
-
-<v-drag pos="663,206,261,_,-15">
-  <div text-center text-3xl border border-main rounded>
-    Double-click me!
-  </div>
-</v-drag>
-
-<img v-drag="'square'" src="https://sli.dev/logo.png">
-
-###### Draggable Arrow
-
-```md
-<v-drag-arrow two-way />
-```
-
-<v-drag-arrow pos="67,452,253,46" two-way op70 />
-
----
-src: ./pages/imported-slides.md
-hide: false
----
 
 ---
 
-# Monaco Editor
-
-Slidev provides built-in Monaco Editor support.
-
-Add `{monaco}` to the code block to turn it into an editor:
-
-```ts {monaco}
-import { ref } from 'vue'
-import { emptyArray } from './external'
-
-const arr = ref(emptyArray(10))
-```
-
-Use `{monaco-run}` to create an editor that can execute the code directly in the slide:
-
-```ts {monaco-run}
-import { version } from 'vue'
-import { emptyArray, sayHello } from './external'
-
-sayHello()
-console.log(`vue ${version}`)
-console.log(emptyArray<number>(10).reduce(fib => [...fib, fib.at(-1)! + fib.at(-2)!], [1, 1]))
-```
+1. Deuvo generates hardware fingerprint
+2. Denuvo/Steam generates a ticket -> proof of game ownership
+3. Game sends steam ticket + fingerprint to server
+4. Server validates steam ticket
+5. Server generates a denuvo token and sends it back
+6. Game runs and uses denuvo token to decrypt values at runtime
 
 ---
-layout: center
-class: text-center
+
+## Bad token
+
+![rounded](./images/bad-token.png)
+
 ---
 
-# Learn More
+# Let's crack the game!
 
-[Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/resources/showcases)
+Two ways:
 
-<PoweredBySlidev mt-10 />
+1. Patch and reverse all decryptions
+2. Find and patch fingerprint to simulate other PC
+
+--> I chose 2.
+
+So the goal is to find all the features denuvo uses to generate a fingerprint
+Then to patch those features to mimic a different PC (with valid denuvo token).
+
+---
+
+## How to find fingerprint features?
+
+Many possible ways
+
+- Debugger
+- Hypervisor
+- Emulator --> ✅
+
+---
+
+## Why emulator?
+
+Denuvo must communicate with OS, hardware, filesystem, ...
+The game needs to grab information from somewhere.
+Pretty much three ways:
+
+- API calls
+- Special instructions (CPUID, Syscall, ...)
+- Memory
+
+An emulator can instrument all that:
+
+- It can trace all API calls
+- It can trace all instructions
+- It can hook all memory access
+
+What the emulator can not: emulate graphics -> it won't be able to fully boot into the game
+luckily:
+Denuvo has two phases:
+
+1. collection phase, before it talks to the server
+2. runtime, when the game runs, after server communication
+
+-> emulation analysis only needs to run until the server communication.
+
+## Fingerprint features
+
+Vary for each protected game
+HWL had 7 Major Categories
+
+1. KUSD values
+2. CPUID leaves
+3. API calls
+4. PEB values
+5. Environment peeks
+6. Inline syscalls
+7. Import integrity
+
+---
+
+## KUSER_SHARED_DATA
+
+- NtProductType
+- ActiveProcessorCount
+- SuiteMask
+- ProductTypeIsValid
+- NtMajorVersion
+- NtMinorVersion
+- NtBuildNumber
+- ProcessorFeatures
+- NumberOfPhysicalPages
+
+---
+
+## CPUID
+
+- 1
+- 0x80000002
+- 0x80000003
+- 0x80000004
+
+---
+
+## API calls
+
+- GetVolumeInformationW
+- GetUserNameW
+- GetComputerNameW
+- CryptGetProvParam
+- CryptAcquireContextA
+- CryptAcquireContextW
+- CryptEnumProvidersW
+- ExpandEnvironmentStringsA &rarr; %COMPUTERNAME%
+
+---
+
+## PEB
+
+- OSMajorVersion
+- OSMinorVersion
+- NumberOfProcessors
+- ImageSubsystemMajorVersion
+- ImageSubsystemMinorVersion
+
+---
+
+## Environment Peeks
+
+PEB->ProcessParameters->Environment
+essentially random peeks into the env vars
+
+- 0x74
+- 0x123
+- 0x1d8
+- 0x291
+
+---
+
+## Inline syscalls
+
+NtQuerySystemInformation &rarr; SystemBasicInformation
+
+ntdll exports are parsed to find syscall ID
+
+---
+
+### Import integrity
+
+- --> Advapi32.dll
+- addresses of these values in IAT
+- changing them invalidates the token, so aslr changes on a reboot might invalidate it.
+
+* CryptAcquireContextA
+* CryptGetProvParam
+* GetUserNameW
+* GetVolumeInformationW
+
+---
+
+## How to patch?
+
+Simple ones:
+
+- API calls -> hook them
+- PEB, Environment peeks -> data overwritten
+  - could have undesired consequences, overwriting the os version or number of cores
+- Import integrity -> trampolinee at fixed VA that redirects to the original value
+  - requires that the VA is available, which it should be
+- KUSD
+
+  - hard to patch
+  - find all places -> ideally HWBP + exception handler
+  - non-linear stack -> wrote a debugger that attaches to the game and traces using HWBP
+  - no guarantee i'll ever have all locations
+
+  - dynamic hook creation
+  - redirect memory load to fake memory region
+  - disassemble all load instruction
+  - analyze and replicate memory source (scale-index-base)
+  - replicate instruction (xor, add, mov, ...)
+
+- CPUID
+
+  - load hypervisor -> custom CPUID vmexit handler for hogwarts legacy
+  - patch xgetbv bits
+
+- Inline syscalls
+  - KUSD approach doesn't work -> mini integrity checks on instructions
+    - instruction bytes are read and computed into other calculations
+    - bytes need to stay intact
+      --> hypervisor + ept hooks -> redirect syscalls to custom handler that replays original data
+      --> syscall hooks would've also worked, but my hypervisor couldn't do that at the time
+
+---
+
+## Performance?
+
+- For me, impossible to make detailed measurements --> I would need game without denuvo and with denuvo
+- denuvo changes a lot, each game is protected differently, even different versions of the game, each integration is different.
+- denuvo has a dedicated team that performs integration into games
+- prior analysis mostly meaningless, has to be looked at for each game invidivually
+
+* each of my 2000 hooks prints when it's called
+* if no print occurs, no denuvo verification code runs --> very likely no possibility of performance impacts
+* video a few prints during normal gameplay
+* lots of prints during transition/loadscreen
+
+---
+
+## Performance?
+
+<Youtube id="6JriEmiZ1t0" width="720" height="405" />
