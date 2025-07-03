@@ -11,7 +11,7 @@ class: text-center
 drawings:
   persist: false
 # slide transition: https://sli.dev/guide/animations.html#slide-transitions
-transition: slide-left
+transition: fade-out
 # enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
 # open graph
@@ -19,7 +19,16 @@ mdc: true
 #  ogImage: https://cover.sli.dev
 ---
 
-# Reverse Engineering<br>![denuvo-logo](./images/denuvo-logo.png) in ![hwl-logo](./images/hwl-logo.png)
+<style scoped>
+  .slidev-layout {
+    padding: 0px;
+}
+</style>
+<h1 class="mt--70 backdrop-blur-xl p-10 text-shadow-3xl">
+Reverse Engineering
+<br>
+<img class="w-40 invert inline" src="./images/denuvo-logo.png" /> in <img class="w-50 invert inline" src="./images/hwl-logo.png" />
+</h1>
 
 ---
 
@@ -32,7 +41,7 @@ mdc: true
 - Cracked & modded Call of Duty games (BOIII, XLabs)
 - Twitter: @momo5502
 
-<img  src="./images/me.png" />
+<img class="rounded-2xl" src="./images/me.png" />
 </div>
 
 ---
@@ -89,7 +98,7 @@ clicks: 13
 
 </v-clicks>
 
-<div class="flex mt-8"
+<div class="flex mt-6"
   v-motion
   :initial="{ x: 0, y: 300 }"
   :click-1="{ y: 0 }"
@@ -150,6 +159,14 @@ clicks: 13
 </div>
 </div>
 </div>
+
+---
+
+# What is the fingerprint?
+
+---
+
+# What is the Denuvo token?
 
 ---
 
@@ -404,6 +421,6 @@ Took me 3 months to find...
 
 ---
 
-# Performance Reasoning
+# Performance Reasoning 2
 
 <Youtube id="6JriEmiZ1t0" width="720" height="405" />
