@@ -23,12 +23,13 @@ mdc: true
 
 ---
 
-## Who am I?
+# Who am I?
 
 <div grid="~ cols-2 gap-2" m="t-2">
 
 - Maurice Heumann
 - Cybersecurity Engineer @ Thales
+- Cracked & modded Call of Duty games (BOIII, XLabs)
 - Twitter: @momo5502
 
 <img  src="./images/me.png" />
@@ -36,7 +37,7 @@ mdc: true
 
 ---
 
-## Agenda
+# Agenda
 
 - Understanding Denuvo
 - The Cracking Strategy
@@ -46,13 +47,18 @@ mdc: true
 
 ---
 
-## What is Denuvo?
+# What is Denuvo?
 
-<div grid="~ cols-2 gap-2" m="t-2">
+<div class="flex" m="t-2">
 
-- Anti tamper solution by Irdeto
-- Protects existing DRM/licensing solutions
-  - e.g. Steam, Origin, ...
+- **Anti-tamper solution** by Irdeto
+- **Not a DRM itself** - protects existing DRM systems
+  - Steam, Origin, Epic Games Store, etc.
+- **Used by major publishers**: EA, Ubisoft, Square Enix, Capcom
+- **Controversial**: Loved by publishers, hated by pirates
+- **Business model**: License per game + server costs
+
+<div class="text-center flex-1">
 
 ```mermaid
 flowchart BT
@@ -64,47 +70,101 @@ flowchart BT
 ```
 
 </div>
+</div>
+
+---
+clicks: 13
+---
+
+# How does it work?
+
+<v-clicks every="0.5">
+
+1. Hardware fingerprint is generated → Computername + Username + ...
+2. Steam ticket generation → Proof of game ownership
+3. Fingerprint & Steam ticket is sent to Denuvo server
+4. Server validates steam ticket → Do you really own the game?
+5. Server generates Denuvo token for the fingerprint
+6. Game runs with Denuvo token
+
+</v-clicks>
+
+<div class="flex mt-8"
+  v-motion
+  :initial="{ x: 0, y: 300 }"
+  :click-1="{ y: 0 }"
+>
+<div class="border-3 border-green p-4 rounded-lg">
+🎮 Game
+<div class="border-3 border-yellow rounded-md p-1 m-2"
+  v-motion
+  :initial="{ x: 0, y: 300 }"
+  :click-3="{ y: 0 }"
+  :click-7="{ x: 661 }"
+  >
+  🔍 Fingerprint
+</div>
+
+<div class="border-3 border-yellow rounded-md p-1 m-2"
+  v-motion
+  :initial="{ x: 0, y: 300 }"
+  :click-5="{ y: 0 }"
+  :click-7="{ x: 661 }"
+>
+  🎟️ Steam Ticket
+</div>
+<div
+  class="absolute"
+  v-motion
+  :initial="{ x: 675, y: 300 }"
+  :click-9="{ x: 675, y: -40 }"
+>✅</div>
+<div class="border-3 border-yellow rounded-md p-1 m-2 opacity-0"
+>
+  🔑 Denuvo Token
+</div>
+</div>
+
+<div class="flex-1">
+</div>
+
+<div class="border-3 border-blue p-4 rounded-lg">
+🌐 Denuvo Server
+
+<div class="border-3 border-yellow rounded-md p-1 m-2 opacity-0"
+  >
+  🔍 Fingerprint
+</div>
+
+<div class="border-3 border-yellow rounded-md p-1 m-2 opacity-0">
+  🎟️ Steam Ticket
+</div>
+
+<div class="border-3 border-white rounded-md p-1 m-2"
+  v-motion
+  :initial="{ x: 0, y: 300 }"
+  :click-11="{ y: 0 }"
+  :click-13="{ x: -661 }"
+>
+  🔑 Denuvo Token
+</div>
+</div>
+</div>
 
 ---
 
-## How does it work?
+# What makes Denuvo so strong?
 
-```mermaid
+**Custom Protection Per Game:**
+- Each game is unique
+- Different fingerprints, patterns, validation
+- No generic crack possible
 
-sequenceDiagram
-    participant Player
-    participant Denuvo as Denuvo Server
-    participant Steam as Steam Server
-    
-    Player->>Denuvo: Hardware Fingerprint + Steam Ticket
-    Denuvo->>Steam: Validate Steam Ticket
-    Steam->>Denuvo: Ticket OK
-    Denuvo->>Player: Generate Denuvo Token for Hardware Fingerprint
-    Player->>Player: Run Game with Ticket
-```
-
-
----
-
-1. Deuvo generates hardware fingerprint
-2. Denuvo/Steam generates a ticket -> proof of game ownership
-3. Game sends steam ticket + fingerprint to server
-4. Server validates steam ticket
-5. Server generates a denuvo token and sends it back
-6. Game runs and uses denuvo token to decrypt values at runtime
-
----
-
-## Why is Denuvo so strong?
-
-- Protection is unique per game
-  - Different fingerprints, different patterns, ... 
-- Usually games are packed when protected
-- Denuvo doesn't pack
-- Instead code is lifted and virtualized in a VM (not reversed)
--  sequences are inserted that validate the fingerprint (likely decryption)
-- this causes tight coupling of game and denuvo code --> hard to separate
-- thousands of validations require thousands of hooks
+**Advanced Code Protection:**
+- No traditional packing - code remains accessible
+- **Code virtualization** - critical sections run in custom VM
+- **Tight integration** - Denuvo is mixed into game logic
+- **Thousands of checks** - validations everywhere
 
 ---
 
@@ -125,7 +185,7 @@ sequenceDiagram
 
 ---
 
-## How to find fingerprint features?
+# How to find fingerprint features?
 
 Many possible ways
 
@@ -135,7 +195,7 @@ Many possible ways
 
 ---
 
-## Why emulator?
+# Why emulator?
 
 Denuvo must communicate with OS, hardware, filesystem, ...
 The game needs to grab information from somewhere.
@@ -160,7 +220,7 @@ Denuvo has two phases:
 
 -> emulation analysis only needs to run until the server communication.
 
-## Fingerprint features
+# Fingerprint features
 
 Vary for each protected game
 HWL had 7 Major Categories
@@ -171,7 +231,7 @@ We'll explore how I found them, how I patched them
 
 ---
 
-## 1. API calls
+# 1. API calls
 
 - GetVolumeInformationW
 - GetUserNameW
@@ -186,7 +246,7 @@ We'll explore how I found them, how I patched them
 
 ---
 
-## 2. PEB
+# 2. PEB
 
 - OSMajorVersion
 - OSMinorVersion
@@ -199,7 +259,7 @@ We'll explore how I found them, how I patched them
 
 ---
 
-## 3. Environment Peeks
+# 3. Environment Peeks
 
 PEB->ProcessParameters->Environment
 essentially random peeks into the env vars
@@ -215,7 +275,7 @@ essentially random peeks into the env vars
 transition: slide-up
 ---
 
-## 4. CPUID
+# 4. CPUID
 
 - 1
 - 0x80000002
@@ -230,11 +290,11 @@ transition: slide-up
 transition: slide-down
 ---
 
-### What is a hypervisor?
+# What is a hypervisor?
 
 ---
 
-## 5. KUSER_SHARED_DATA
+# 5. KUSER_SHARED_DATA
 
 - NtProductType
 - ActiveProcessorCount
@@ -264,7 +324,7 @@ transition: slide-down
 transition: slide-up
 ---
 
-## 6. Inline syscalls
+# 6. Inline syscalls
 
 NtQuerySystemInformation &rarr; SystemBasicInformation
 
@@ -281,16 +341,16 @@ ntdll exports are parsed to find syscall ID
 transition: slide-down
 ---
 
-## Hypervisor -> shadow hooking
+# Hypervisor -> shadow hooking
 
 ---
 
-# The last one... FML
-3 months...
+# The last one...
+Took me 3 months to find...
 
 ---
 
-### 7. Import integrity
+# 7. Import integrity
 
 - --> Advapi32.dll
 - addresses of these values in IAT
@@ -312,7 +372,13 @@ transition: slide-down
 
 ---
 
-## What does that leave us with?
+# It's running...
+
+<img src="./images/running.png" />
+
+---
+
+# What does that leave us with?
 
 --> game runs, but semi stable - why?
  -> sampling KUSD may miss values
@@ -324,7 +390,7 @@ transition: slide-down
 
 ---
 
-## Performance Reasoning
+# Performance Reasoning
 
 - For me, impossible to make detailed measurements --> I would need game without denuvo and with denuvo
 - denuvo changes a lot, each game is protected differently, even different versions of the game, each integration is different.
@@ -338,6 +404,6 @@ transition: slide-down
 
 ---
 
-## Performance?
+# Performance Reasoning
 
 <Youtube id="6JriEmiZ1t0" width="720" height="405" />
