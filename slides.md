@@ -20,14 +20,33 @@ mdc: true
 ---
 
 <style scoped>
-  .slidev-layout {
+.slidev-layout {
     padding: 0px;
 }
+
+h1 {
+  text-shadow: 0px 0px 0.3em rgba(0, 0, 0, 0.381);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+h1 img.denuvo-logo {
+  display: inline;
+  transform: translateY(-0.05em);
+  width: 180px;
+  filter: invert() drop-shadow(0px 0px 0.1em rgba(0, 0, 0, 0.575));
+}
+
+h1 img.hwl-logo {
+  display: inline;
+  transform: translateY(-0.2em);
+  width: 220px;
+  filter: invert() drop-shadow(0px 0px 0.1em rgba(0, 0, 0, 0.575));
+}
 </style>
-<h1 class="mt--70 backdrop-blur-xl p-10 text-shadow-3xl">
+<h1 class="mt--70 backdrop-blur-xl p-9 text-shadow-3xl">
 Reverse Engineering
 <br>
-<img class="w-40 invert inline" src="./images/denuvo-logo.png" /> in <img class="w-50 invert inline" src="./images/hwl-logo.png" />
+<img class="denuvo-logo" src="./images/denuvo-logo.png" /> in <img class="hwl-logo" src="./images/hwl-logo.png" />
 </h1>
 
 ---
@@ -52,7 +71,6 @@ Reverse Engineering
 - The Cracking Strategy
 - Technical Analysis
 - Performance Analysis
-
 
 ---
 
