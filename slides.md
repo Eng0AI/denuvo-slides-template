@@ -291,9 +291,9 @@ layout: center
 
 Three main ways of communication:
 
-- API calls
-- Special instructions (CPUID, Syscall, ...)
-- Reading Memory
+- <span class="text-color-yellow">API calls</span>
+- <span class="text-color-lime">Reading Memory</span>
+- <span class="text-color-sky">Special instructions</span> (CPUID, Syscall, ...)
 
 → We need a way to easily analyze, instrument and intercept all 3
 
@@ -305,9 +305,9 @@ Three main ways of communication:
 
 Emulator can:
 
-- instrument all API calls
-- trace all instructions
-- intercept every memory access
+- instrument all <span class="text-color-yellow">API calls</span>
+- intercept every <span class="text-color-lime">memory access</span>
+- trace all <span class="text-color-sky">instructions</span>
 
 What the emulator can not: emulate graphics -> it won't be able to fully boot into the game
 luckily:
@@ -320,18 +320,25 @@ Denuvo has two phases:
 
 ---
 
-# 1. API calls
+# <span class="opacity-[0.5]">Category:</span> <span class="text-color-yellow">API calls</span>
 
-**How to trace them?**
+**How to find?**
 
 - Breakpoint on every exported function of every DLL
   - super cheap in the emulator
+- Log every API call that was done from Hogwarts Legacy
+
+---
+
+# 1. Feature: <span class="text-color-yellow">API calls</span>
+
+#### Emulator logged:
 
 <img class="mt-4 rounded-lg border-2 border-yellow" src="./images/api-calls.png" />
 
 ---
 
-# 1. API calls
+# 1. Feature: <span class="text-color-yellow">API calls</span>
 
 - GetVolumeInformationW
 - GetUserNameW
@@ -344,27 +351,36 @@ Denuvo has two phases:
 
 ---
 
-# 1. API calls
+# 1. Feature: <span class="text-color-yellow">API calls</span>
 
-**How to patch them?**
+**How to patch?**
+
+Easy:
 
 - Denuvo has no integrity checks on API calls
 - just hook all API calls and return constant values
 
 ---
 
-# 2. PEB
+# <span class="opacity-[0.5]">Category:</span> <span class="text-color-lime">Memory Reads</span>
 
-**How to trace memory?**
+**How to find?**
 
-- Intercept all memory access in emulator
+- Install hook on every memory read in the emulator
 - Skip uninteresting access (stack, heap, loaded modules, ...)
+- Log interesting reads
+
+---
+
+# 2. Feature: <span class="text-color-lime">PEB</span>
+
+#### Emulator logged:
 
 <img class="mt-4 rounded-lg border-2 border-lime" src="./images/peb.png" />
 
 ---
 
-# 2. PEB
+# 2. Feature: <span class="text-color-lime">PEB</span>
 
 - OSMajorVersion
 - OSMinorVersion
@@ -377,41 +393,26 @@ Denuvo has two phases:
 
 ---
 
-# 2. PEB
+# 2. Feature: <span class="text-color-lime">PEB</span>
 
-**How to patch them?**
+**How to patch?**
 
 - unprotect memory and overwrite with constant values
-- can have undesired side effects → don't care, it's just a POC ¯\\\_(ツ)\_/¯
+- can have undesired side effects (e.g. patching OS version)
 
----
-transition: slide-up
----
-
-# 3. CPUID
-
-<img class="mt-4 rounded-lg border-2 border-sky" src="./images/cpuid.png" />
-
-- 1
-- 0x80000002
-- 0x80000003
-- 0x80000004
-
-- load hypervisor -> custom CPUID vmexit handler for hogwarts legacy
-- hides other features -> xgetbv -> patch leaf
-- other features conditionally active that i might not have needed to patch
-
----
-transition: slide-down
----
-
-# What is a hypervisor?
+→ don't care, it's just a POC ¯\\\_(ツ)\_/¯
 
 ---
 
-# 4. KUSER_SHARED_DATA
+# 3. Feature: <span class="text-color-lime">KUSER_SHARED_DATA</span>
+
+#### Emulator also logged:
 
 <img class="mt-4 rounded-lg border-2 border-lime" src="./images/kusd.png" />
+
+---
+
+# 3. Feature: <span class="text-color-lime">KUSER_SHARED_DATA</span>
 
 - NtProductType
 - ActiveProcessorCount
@@ -425,12 +426,13 @@ transition: slide-down
 
 ---
 
+# 3. Feature: <span class="text-color-lime">KUSER_SHARED_DATA</span>
+
 --> hard to patch
 
 - find all places -> ideally HWBP + exception handler
 - non-linear stack -> wrote a debugger that attaches to the game and traces using HWBP
 - no guarantee i'll ever have all locations
-
 - dynamic hook creation
 - redirect memory load to fake memory region
 - disassemble all load instruction
@@ -438,12 +440,93 @@ transition: slide-down
 - replicate instruction (xor, add, mov, ...)
 
 ---
+
+# <span class="opacity-[0.5]">Category:</span> <span class="text-color-sky">Special Instructions</span>
+
+**How to find?**
+
+- Emulator supports hooks for special instructions (cpuid, syscall, rdtsc, ...)
+- Log interesting instructions executed by Hogwarts Legacy
+
+---
+
+# 4. Feature: <span class="text-color-sky">CPUID</span>
+
+#### Emulator logged:
+
+<img class="mt-4 rounded-lg border-2 border-sky" src="./images/cpuid.png" />
+
+---
+
+# 4. Feature: <span class="text-color-sky">CPUID</span>
+
+- CPUID Leaves
+  - 0x1 → CPU Family, Model, ...
+  - 0x80000002 → CPU Brand String (e.g. "Genuine Intel")
+  - 0x80000003 → -""-
+  - 0x80000004 → -""-
+
+→ Leaf 0x1 probably used to conditionally enable other features (xgetbv?)
+
+---
 transition: slide-up
 ---
 
-# 5. Inline syscalls
+# 4. Feature: <span class="text-color-sky">CPUID</span>
+
+**How to patch?**
+
+- Too lazy to redo what was done for KUSER_SHARED_DATA
+
+→ Hypervisor
+
+---
+transition: slide-down
+---
+
+# What is a Hypervisor?
+
+<div class="flex">
+<div>
+
+- Driver or standalone Software that enables VMs
+- Most VM instructions run on CPU
+- Some are intercepted by Hypervisor
+  - Hypervisor can register a callback at the CPU
+
+<div v-click>
+
+→ Hypervisor doesn't need to manage VMs
+
+</div>
+
+<div v-click>
+
+- Just register callback (VM exit handler)
+- Intercept CPUID VM exit → patch return values
+
+→ Can also have undesired consequences
+
+</div>
+</div>
+<div class="flex-1 text-center">
+<img class="rounded-xl w-90 ml-auto" src="./images/hypervisor.png" />
+</div>
+</div>
+
+---
+
+# 5. Feature: <span class="text-color-sky">Inline syscalls</span>
+
+#### Emulator logged:
 
 <img class="mt-4 rounded-lg border-2 border-sky" src="./images/syscall.png" />
+
+---
+transition: slide-up
+---
+
+# 5. Feature: <span class="text-color-sky">Inline syscalls</span>
 
 NtQuerySystemInformation &rarr; SystemBasicInformation
 
@@ -464,14 +547,21 @@ transition: slide-down
 # Hypervisor -> shadow hooking
 
 ---
+layout: center
+---
 
 # The last one...
 
-Took me 3 months to find...
+<div class="text-center">
+<img class="w50 m-auto rounded-md drop-shadow-md" src="./images/insanity.jpg">
+
+<span class="opacity-[0.7]">...took me 3 months to find</span>
+
+</div>
 
 ---
 
-# 6. Import integrity
+# 6. Feature: <span class="text-color-red-500">Import integrity</span>
 
 - --> Advapi32.dll
 - addresses of these values in IAT
@@ -496,7 +586,9 @@ Took me 3 months to find...
 
 # It's running...
 
-<img src="./images/running.png" />
+... after 5 months
+
+<img class="w-180 m-auto" src="./images/running.png" />
 
 ---
 
