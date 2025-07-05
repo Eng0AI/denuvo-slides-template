@@ -193,11 +193,13 @@ clicks: 13
 # What makes Denuvo so strong?
 
 **Custom Protection Per Game:**
+
 - Each game is unique
 - Different fingerprints, patterns, validation
 - No generic crack possible
 
 **Advanced Code Protection:**
+
 - No traditional packing - code remains accessible
 - **Code virtualization** - critical sections run in custom VM
 - **Tight integration** - Denuvo is mixed into game logic
@@ -205,14 +207,15 @@ clicks: 13
 
 ---
 
-
 # Let's crack the game!
 
 **Two Possible Approaches**
+
 1. Patch and reverse all decryptions --> insane amount of work
 2. Method 2: Fingerprint simulation --> chosen approach (empress also chose that one)
 
 **Why Fingerprint Simulation?**
+
 - Goal: mimic different PC with a valid token
 - Find all fingerprints
 - Patch all fingerprints to mimic other PC
@@ -292,7 +295,8 @@ We'll explore how I found them, how I patched them
 - ImageSubsystemMinorVersion
 
 --> Just unprotect and overwrite the data
-  - could have undesired consequences, overwriting the os version or number of cores
+
+- could have undesired consequences, overwriting the os version or number of cores
 
 ---
 
@@ -346,16 +350,16 @@ transition: slide-down
 ---
 
 --> hard to patch
-  - find all places -> ideally HWBP + exception handler
-  - non-linear stack -> wrote a debugger that attaches to the game and traces using HWBP
-  - no guarantee i'll ever have all locations
 
-  - dynamic hook creation
-  - redirect memory load to fake memory region
-  - disassemble all load instruction
-  - analyze and replicate memory source (scale-index-base)
-  - replicate instruction (xor, add, mov, ...)
+- find all places -> ideally HWBP + exception handler
+- non-linear stack -> wrote a debugger that attaches to the game and traces using HWBP
+- no guarantee i'll ever have all locations
 
+- dynamic hook creation
+- redirect memory load to fake memory region
+- disassemble all load instruction
+- analyze and replicate memory source (scale-index-base)
+- replicate instruction (xor, add, mov, ...)
 
 ---
 transition: slide-up
@@ -368,11 +372,12 @@ NtQuerySystemInformation &rarr; SystemBasicInformation
 ntdll exports are parsed to find syscall ID
 
 --> Inline syscalls
-  - KUSD approach doesn't work -> mini integrity checks on instructions
-    - instruction bytes are read and computed into other calculations
-    - bytes need to stay intact
-      --> hypervisor + ept hooks -> redirect syscalls to custom handler that replays original data
-      --> syscall hooks would've also worked, but my hypervisor couldn't do that at the time
+
+- KUSD approach doesn't work -> mini integrity checks on instructions
+  - instruction bytes are read and computed into other calculations
+  - bytes need to stay intact
+    --> hypervisor + ept hooks -> redirect syscalls to custom handler that replays original data
+    --> syscall hooks would've also worked, but my hypervisor couldn't do that at the time
 
 ---
 transition: slide-down
@@ -383,6 +388,7 @@ transition: slide-down
 ---
 
 # The last one...
+
 Took me 3 months to find...
 
 ---
@@ -404,6 +410,7 @@ Took me 3 months to find...
 -> usually import is used for execution, not in denuvo case
 
 --> simple to patch
+
 - trampolinee at fixed VA that redirects to the original value
 - requires that the VA is available, which it should be
 
@@ -418,11 +425,11 @@ Took me 3 months to find...
 # What does that leave us with?
 
 --> game runs, but semi stable - why?
- -> sampling KUSD may miss values
- -> patching CPUID can destabilize system
- -> overwriting PEB can also destabilize 
+-> sampling KUSD may miss values
+-> patching CPUID can destabilize system
+-> overwriting PEB can also destabilize
 
---> 2k hooks. can we do something with that? 
+--> 2k hooks. can we do something with that?
 -> we can analyze when the hooks are triggered to see in which situations the game executes denuvo code --> performance reasoning
 
 ---

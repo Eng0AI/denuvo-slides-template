@@ -1,7 +1,7 @@
-import { defineMermaidSetup } from '@slidev/types'
+import { defineMermaidSetup } from "@slidev/types";
 
 export default defineMermaidSetup(() => {
   return {
-    theme: 'forest',
-  }
-})
+    theme: "forest",
+  };
+});
