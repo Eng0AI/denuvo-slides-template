@@ -53,14 +53,16 @@ Reverse Engineering
 
 # Who am I?
 
-<div grid="~ cols-2 gap-2" m="t-2">
+<div class="flex">
 
 - Maurice Heumann
 - Cybersecurity Engineer @ Thales
 - Cracked & modded Call of Duty games (BOIII, XLabs)
 - Twitter: @momo5502
 
-<img class="rounded-2xl" src="./images/me.png" />
+<div class="flex-1 text-center">
+<img class="rounded-2xl w-70 m-auto" src="./images/me.png" />
+</div>
 </div>
 
 ---
