@@ -197,7 +197,7 @@ clicks: 13
 
 &nbsp;
 
-Collection of identifiers that uniquely identify the PC:
+Collection of features that uniquely identify the PC:
 
 - Computer name
 - Username
@@ -320,14 +320,14 @@ Denuvo has two phases:
 
 ---
 
-# Fingerprint features
+# 1. API calls
 
-Vary for each protected game
-HWL had 7 Major Categories
+**How to trace them?**
 
-We'll explore how I found them, how I patched them
+- Breakpoint on every exported function of every DLL
+  - super cheap in the emulator
 
---> actual number may vary
+<img class="mt-4 rounded-lg border-2 border-yellow" src="./images/api-calls.png" />
 
 ---
 
@@ -342,7 +342,25 @@ We'll explore how I found them, how I patched them
 - CryptEnumProvidersW
 - ExpandEnvironmentStringsA &rarr; %COMPUTERNAME%
 
---> Just hook them and return deterministic values
+---
+
+# 1. API calls
+
+**How to patch them?**
+
+- Denuvo has no integrity checks on API calls
+- just hook all API calls and return constant values
+
+---
+
+# 2. PEB
+
+**How to trace memory?**
+
+- Intercept all memory access in emulator
+- Skip uninteresting access (stack, heap, loaded modules, ...)
+
+<img class="mt-4 rounded-lg border-2 border-lime" src="./images/peb.png" />
 
 ---
 
@@ -353,30 +371,26 @@ We'll explore how I found them, how I patched them
 - NumberOfProcessors
 - ImageSubsystemMajorVersion
 - ImageSubsystemMinorVersion
-
---> Just unprotect and overwrite the data
-
-- could have undesired consequences, overwriting the os version or number of cores
+- ProcessParameters -> Environment
+  - Denuvo reads random values in the environment variables
+  - Offsets: 0x74, 0x123, 0x1d8, 0x291
 
 ---
 
-# 3. Environment Peeks
+# 2. PEB
 
-PEB->ProcessParameters->Environment
-essentially random peeks into the env vars
+**How to patch them?**
 
-- 0x74
-- 0x123
-- 0x1d8
-- 0x291
-
---> just unprotect and overwrite
+- unprotect memory and overwrite with constant values
+- can have undesired side effects → don't care, it's just a POC ¯\\\_(ツ)\_/¯
 
 ---
 transition: slide-up
 ---
 
-# 4. CPUID
+# 3. CPUID
+
+<img class="mt-4 rounded-lg border-2 border-sky" src="./images/cpuid.png" />
 
 - 1
 - 0x80000002
@@ -395,7 +409,9 @@ transition: slide-down
 
 ---
 
-# 5. KUSER_SHARED_DATA
+# 4. KUSER_SHARED_DATA
+
+<img class="mt-4 rounded-lg border-2 border-lime" src="./images/kusd.png" />
 
 - NtProductType
 - ActiveProcessorCount
@@ -425,7 +441,9 @@ transition: slide-down
 transition: slide-up
 ---
 
-# 6. Inline syscalls
+# 5. Inline syscalls
+
+<img class="mt-4 rounded-lg border-2 border-sky" src="./images/syscall.png" />
 
 NtQuerySystemInformation &rarr; SystemBasicInformation
 
@@ -453,7 +471,7 @@ Took me 3 months to find...
 
 ---
 
-# 7. Import integrity
+# 6. Import integrity
 
 - --> Advapi32.dll
 - addresses of these values in IAT
@@ -517,3 +535,7 @@ layout: center
 # Performance Reasoning
 
 <Youtube id="6JriEmiZ1t0" width="720" height="405" />
+
+---
+
+# Summary
