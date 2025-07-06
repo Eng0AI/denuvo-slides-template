@@ -565,34 +565,10 @@ transition: slide-up
 - Denuvo has mini integrity checks on instructions
 - instruction bytes are read and computed into other calculations
 - bytes need to stay intact → unable to hook
+- Hypervisor can perform stealth hooking (EPT hooking)
+- Integrity check can not see the hook
 
-→ Hypervisor → EPT Hooking
-
----
-transition: slide-down
----
-
-# What is EPT Hooking?
-
-- Hooking technique that bypasses integrity checks
-- Also known as Shadow Hooking
-- Uses Intel VT-x Extended Page Tables (EPT)
-- Regular memory is Virtualized
-  - Virtual addresses are translated to physical addresses in RAM
-- Hypervisor can do that again
-  - Second level address translation (SLAT)
-  - Pysical address is treated as virtual address and translated again
-- SLAT also has distinct memory permissions (R/W/X)
-- On Intel VT-x pages can be executable without being readable
-- Make page executable, but remove read permissions
-  - Code execution works
-  - Integrity checks need to read → EPT violation
-- Hypervisor can remove execute permissions, but add read permissions
-  - can also change the physical page the virtual address maps to
-  - reading and executing can be translated to different physical pages
-  - read page is unchanged, execute page has hook
-
-→ Hypervisor can also hook syscalls, but my hypervisor couldn't do that at the time
+→ Want to know more? <a href="https://momo5502.com/ept" target="_blank">momo5502.com/ept</a>
 
 ---
 layout: center
