@@ -546,17 +546,31 @@ transition: slide-up
 - instruction bytes are read and computed into other calculations
 - bytes need to stay intact → unable to hook
 
-→ Hypervisor → Shadow Hooking
+→ Hypervisor → EPT Hooking
 
 ---
 transition: slide-down
 ---
 
-# What is Shadow Hooking?
+# What is EPT Hooking?
 
 - Hooking technique that bypasses integrity checks
-
-- redirect syscalls to custom handler that replays original data
+- Also known as Shadow Hooking
+- Uses Intel VT-x Extended Page Tables (EPT)
+- Regular memory is Virtualized
+  - Virtual addresses are translated to physical addresses in RAM
+- Hypervisor can do that again
+  - Second level address translation (SLAT)
+  - Pysical address is treated as virtual address and translated again
+- SLAT also has distinct memory permissions (R/W/X)
+- On Intel VT-x pages can be executable without being readable
+- Make page executable, but remove read permissions
+  - Code execution works
+  - Integrity checks need to read → EPT violation
+- Hypervisor can remove execute permissions, but add read permissions
+  - can also change the physical page the virtual address maps to
+  - reading and executing can be translated to different physical pages
+  - read page is unchanged, execute page has hook
 
 → Hypervisor can also hook syscalls, but my hypervisor couldn't do that at the time
 
@@ -606,15 +620,29 @@ layout: center
 
 ---
 
+# Did I manage to fully crack it?
+
+<v-click>
+
+### No.
+
+<img class="w-140 mt-4 rounded-md" src="./images/no-time.webp" />
+</v-click>
+
+---
+
 # What does that leave us with?
 
---> game runs, but semi stable - why?
--> sampling KUSD may miss values
--> patching CPUID can destabilize system
--> overwriting PEB can also destabilize
+- Game runs, but semi stable. Why?
+  - Sampling KUSD may miss values
+  - Patching CPUID & PEB destabilizes system
+  - Syscall patches likely also incomplete
+  - Maybe I overlooked features that don't trigger token error?
 
---> 2k hooks. can we do something with that?
--> we can analyze when the hooks are triggered to see in which situations the game executes denuvo code --> performance reasoning
+→ 2000+ hooks. We can surely do something with that?
+
+- Print when the hooks are triggered
+- See in which situations Denuvo code runs
 
 ---
 layout: center
@@ -645,3 +673,12 @@ layout: center
 ---
 
 # Summary
+
+- Patching it requires thousands of hooks
+- Integration is different for each game
+- Finding fingerprint features is conceptually hard
+- Patching fingerprint is conceptually easy, but takes huge amount of time
+  - No real incentive to spend the time
+- As a researcher, you are happy you found the fingerprints, you don't care about patching all of them
+- This makes denuvo so strong
+  - they make the easy challenge look hard and the hard challenge look easy
