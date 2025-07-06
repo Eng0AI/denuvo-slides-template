@@ -372,7 +372,7 @@ Easy:
 
 ---
 
-# 2. Feature: <span class="text-color-lime">PEB</span>
+# 2. Feature: <span class="text-color-lime">Process Environment Block</span>
 
 #### Emulator logged:
 
@@ -380,7 +380,7 @@ Easy:
 
 ---
 
-# 2. Feature: <span class="text-color-lime">PEB</span>
+# 2. Feature: <span class="text-color-lime">Process Environment Block</span>
 
 - OSMajorVersion
 - OSMinorVersion
@@ -393,7 +393,7 @@ Easy:
 
 ---
 
-# 2. Feature: <span class="text-color-lime">PEB</span>
+# 2. Feature: <span class="text-color-lime">Process Environment Block</span>
 
 **How to patch?**
 
