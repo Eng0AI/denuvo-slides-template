@@ -543,8 +543,6 @@ transition: slide-down
 <img class="mt-4 rounded-lg border-2 border-sky" src="./images/syscall.png" />
 
 ---
-transition: slide-up
----
 
 # 5. Feature: <span class="text-color-sky">Inline syscalls</span>
 
