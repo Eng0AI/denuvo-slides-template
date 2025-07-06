@@ -87,7 +87,7 @@ Reverse Engineering
 # Agenda
 
 - Understanding Denuvo
-- Cracking the Game
+- Bypassing Denuvo
 - Performance Reasoning
 
 ---
@@ -239,6 +239,7 @@ Collection of features that uniquely identify the PC:
 <gt>CQBFR0aGA0eM2o ... eXYYW1BGYPLhA_THfJVDAgJ2c=</gt>  <!-- Encoded game token data -->
 ```
 
+- Belongs to a fingerprint
 - Only requested from Denuvo servers if fingerprint changed
 - Error if token can't be requested (e.g. no game license):
   <img src="./images/bad-token.png" class="mt-2 rounded-lg">
@@ -280,7 +281,7 @@ Collection of features that uniquely identify the PC:
 layout: center
 ---
 
-# Cracking the Game
+# Bypassing Denuvo
 
 ---
 
