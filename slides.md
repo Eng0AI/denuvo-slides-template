@@ -320,24 +320,13 @@ Three main ways of communication:
 
 ---
 
-# Userspace Emulation
+# Sogen
 
-- Simulate CPU, Memory & OS in Software
+- Sogen is a a windows userspace emulator
+- Proves strong instrumentation capabilities → helps analyzing Denuvo
+- Check it out: <a href="https://sogen.dev" target="_blank">sogen.dev</a>
 
-Emulator can:
-
-- instrument all <span class="text-color-yellow">API calls</span>
-- intercept every <span class="text-color-lime">memory access</span>
-- trace all <span class="text-color-sky">instructions</span>
-
-What the emulator can not: emulate graphics -> it won't be able to fully boot into the game
-luckily:
-Denuvo has two phases:
-
-1. collection phase, before it talks to the server
-2. runtime, when the game runs, after server communication
-
--> emulation analysis only needs to run until the server communication.
+<img class="m-auto mt-4 w-150" src="./images/sogen2.png" />
 
 ---
 
