@@ -528,29 +528,43 @@ transition: slide-up
 
 # 5. Feature: <span class="text-color-sky">Inline syscalls</span>
 
-NtQuerySystemInformation &rarr; SystemBasicInformation
+- NtQuerySystemInformation → SystemBasicInformation
+  - NumberOfProcessors
+  - NumberOfPhysicalPages
+  - TimerResolution
+  - ...
 
-ntdll exports are parsed to find syscall ID
+→ NTDLL exports are parsed to find syscall ID
 
---> Inline syscalls
+---
 
-- KUSD approach doesn't work -> mini integrity checks on instructions
-  - instruction bytes are read and computed into other calculations
-  - bytes need to stay intact
-    --> hypervisor + ept hooks -> redirect syscalls to custom handler that replays original data
-    --> syscall hooks would've also worked, but my hypervisor couldn't do that at the time
+# 5. Feature: <span class="text-color-sky">Inline syscalls</span>
+
+**How to patch?**
+
+- Denuvo has mini integrity checks on instructions
+- instruction bytes are read and computed into other calculations
+- bytes need to stay intact → unable to hook
+
+→ Hypervisor → Shadow Hooking
 
 ---
 transition: slide-down
 ---
 
-# Hypervisor -> shadow hooking
+# What is Shadow Hooking?
+
+- Hooking technique that bypasses integrity checks
+
+- redirect syscalls to custom handler that replays original data
+
+→ Hypervisor can also hook syscalls, but my hypervisor couldn't do that at the time
 
 ---
 layout: center
 ---
 
-# The last one...
+# The last feature...
 
 <div class="text-center">
 <img class="w50 m-auto rounded-md drop-shadow-md" src="./images/insanity.jpg">
