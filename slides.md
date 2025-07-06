@@ -11,13 +11,29 @@ class: text-center
 drawings:
   persist: false
 # slide transition: https://sli.dev/guide/animations.html#slide-transitions
-transition: fade-out
+transition: my-transition
 # enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
 # open graph
 # seoMeta:
 #  ogImage: https://cover.sli.dev
 ---
+
+<style>
+.my-transition-enter-active,
+.my-transition-leave-active {
+  transition: opacity 0.1s linear;
+}
+
+.my-transition-enter-active {
+  transition-delay: 0.1s;
+}
+
+.my-transition-enter-from,
+.my-transition-leave-to {
+  opacity: 0;
+}
+</style>
 
 <style scoped>
 .slidev-layout {
@@ -132,6 +148,7 @@ clicks: 13
 <div class="flex mt-6 text-shadow-xl"
   v-motion
   :initial="{ x: 0, y: 300 }"
+  :enter="{ x: 0, y: 300 }"
   :click-1="{ y: 0 }"
 >
 <div class="border-3 border-lime p-4 rounded-lg">
@@ -139,6 +156,7 @@ clicks: 13
 <div class="border-3 border-red-600 rounded-md p-1 m-2"
   v-motion
   :initial="{ x: 0, y: 300 }"
+  :enter="{ x: 0, y: 300 }"
   :click-3="{ y: 0 }"
   :click-7="{ x: 660 }"
   >
@@ -148,6 +166,7 @@ clicks: 13
 <div class="border-3 border-red-600 rounded-md p-1 m-2"
   v-motion
   :initial="{ x: 0, y: 300 }"
+  :enter="{ x: 0, y: 300 }"
   :click-5="{ y: 0 }"
   :click-7="{ x: 660 }"
 >
@@ -157,6 +176,7 @@ clicks: 13
   class="absolute font-size-[1.2em]"
   v-motion
   :initial="{ x: 673, y: 300 }"
+  :enter="{ x: 673, y: 300 }"
   :click-9="{ x: 673, y: -43 }"
 >✅</div>
 <div class="border-3 rounded-md p-1 m-2 opacity-0"
@@ -183,6 +203,7 @@ clicks: 13
 <div class="border-3 border-yellow rounded-md p-1 m-2"
   v-motion
   :initial="{ x: 0, y: 300 }"
+  :enter="{ x: 0, y: 300 }"
   :click-11="{ y: 0 }"
   :click-13="{ x: -660 }"
 >
