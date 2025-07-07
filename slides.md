@@ -33,6 +33,56 @@ mdc: true
 .my-transition-leave-to {
   opacity: 0;
 }
+
+.macos-window {
+  border-radius: 7px;
+  background: #424242;
+  border: 1px solid #424242;
+}
+
+.macos-window > img {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.macos-bar {
+  display: flex;
+  justify-content: center;
+  padding-left: 5px;
+}
+
+.macos-button {
+  display: inline-block;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin: auto;
+  margin-left: 6px;
+}
+
+.macos-close {
+  background:rgb(254, 111, 111);
+}
+
+.macos-minimize {
+  background:rgb(255, 199, 88);
+}
+
+.macos-maximize {
+  background:rgb(92, 236, 130);
+}
+
+.macos-url-bar {
+  flex: 1;
+  background: #565656;
+  margin: 8px;
+  font-size: 0.6em;
+  margin-left: 25px;
+  border-radius: 4px;
+  padding: 4px;
+  padding-left: 6px;
+  font-family: monospace;
+}
 </style>
 
 <style scoped>
@@ -323,10 +373,18 @@ Three main ways of communication:
 # Sogen
 
 - Sogen is a a windows userspace emulator
-- Proves strong instrumentation capabilities → helps analyzing Denuvo
+- Provides strong instrumentation capabilities → helps analyzing Denuvo
 - Check it out: <a href="https://sogen.dev" target="_blank">sogen.dev</a>
 
-<img class="m-auto mt-4 w-150" src="./images/sogen2.png" />
+<div class="m-auto mt-4 w-150 macos-window shadow-lg">
+<div class="macos-bar">
+  <span class="macos-button macos-close"></span>
+  <span class="macos-button macos-minimize"></span>
+  <span class="macos-button macos-maximize"></span>
+  <span class="macos-url-bar"><span class="text-color-green">https://</span>sogen.dev</span>
+</div>
+<img src="./images/sogen.png" />
+</div>
 
 ---
 
@@ -593,6 +651,24 @@ layout: center
 
 - trampolinee at fixed VA that redirects to the original value
 - requires that the VA is available, which it should be
+
+---
+layout: center
+---
+
+# Demo
+
+---
+
+<style scoped>
+.slidev-layout {
+    padding: 0px;
+}
+</style>
+<div class="w-[100%] h-[100%] flex flex-col">
+<iframe class="flex-1" src="https://sogen.dev" />
+<span class="w-1 h-1"></span>
+</div>
 
 ---
 
