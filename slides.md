@@ -40,7 +40,7 @@ mdc: true
   border: 1px solid #424242;
 }
 
-.macos-window > img {
+.macos-window > *:last-child {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
@@ -82,6 +82,13 @@ mdc: true
   padding: 4px;
   padding-left: 6px;
   font-family: monospace;
+}
+
+.scaled-frame {
+  transform: scale(0.5);
+  transform-origin: 0 0;
+  width: 200%;
+  height: 200%;
 }
 </style>
 
@@ -383,7 +390,10 @@ Three main ways of communication:
   <span class="macos-button macos-maximize"></span>
   <span class="macos-url-bar"><span class="text-color-green">https://</span>sogen.dev</span>
 </div>
-<img src="./images/sogen.png" />
+<!--<img src="./images/sogen.png" />-->
+<div class="h-70 w-full overflow-hidden">
+<iframe class="scaled-frame" src="https://sogen.dev"></iframe>
+</div>
 </div>
 
 ---
@@ -658,6 +668,8 @@ layout: center
 
 # Demo
 
+sogen.dev
+
 ---
 
 <style scoped>
@@ -742,3 +754,11 @@ layout: center
 - As a researcher, you are happy you found the fingerprints, you don't care about patching all of them
 - This makes denuvo so strong
   - they make the easy challenge look hard and the hard challenge look easy
+
+---
+layout: center
+---
+
+# Thank you
+
+Questions?
