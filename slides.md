@@ -3,7 +3,6 @@
 theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: ./images/hwl.webp
 # some information about your slides (markdown enabled)
 title: Reverse Engineering Denuvo in Hogwarts Legacy
 class: text-center
@@ -116,7 +115,18 @@ h1 img.hwl-logo {
   width: 220px;
   filter: invert() drop-shadow(0px 0px 0.1em rgba(0, 0, 0, 0.575));
 }
+
+img.main-background {
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  object-fit: cover;
+}
 </style>
+<img class="main-background" src="./images/hwl.webp" />
 <h1 class="mt--70 backdrop-blur-xl p-9 text-shadow-3xl">
 Reverse Engineering
 <br>
