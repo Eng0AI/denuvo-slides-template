@@ -4,7 +4,7 @@ theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
 # some information about your slides (markdown enabled)
-title: Reverse Engineering Denuvo in Hogwarts Legacy
+title: How to Crack Denuvo in Hogwarts Legacy
 class: text-center
 # https://sli.dev/features/drawing
 drawings:
@@ -128,7 +128,7 @@ img.main-background {
 </style>
 <img class="main-background" src="./images/hwl.webp" />
 <h1 class="mt--70 backdrop-blur-xl p-9 text-shadow-3xl">
-Reverse Engineering
+How to Crack
 <br>
 <img class="denuvo-logo" src="./images/denuvo-logo.png" /> in <img class="hwl-logo" src="./images/hwl-logo.png" />
 </h1>
