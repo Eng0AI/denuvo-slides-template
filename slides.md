@@ -769,6 +769,11 @@ layout: center
 layout: center
 ---
 
-# Thank you
+# Thank you!
 
-Questions?
+<div class="text-center">
+<img class="w50 m-auto rounded-md drop-shadow-md" src="./images/questions.jpg">
+
+<span class="opacity-[0.7]">Questions?</span>
+
+</div>
