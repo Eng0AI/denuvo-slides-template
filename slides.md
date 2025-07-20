@@ -141,7 +141,7 @@ Reverse Engineering
 
 - Maurice Heumann
 - Cybersecurity Engineer @ Thales
-- Cracked & modded Call of Duty games (BOIII, XLabs)
+- Used to mod COD games (BOIII, XLabs)
 - Twitter: @momo5502
 
 <div class="flex-1 text-center">
@@ -323,7 +323,7 @@ Collection of features that uniquely identify the PC:
   - Reads many fingerprint values at thousands of places
   - Values are likely used to encrypt game data
   - Token contains information to decrypt the data again
-  - If CPU info doesn't match token, game crashes
+  - If PC doesn't match token, game crashes
 
 ---
 
@@ -736,21 +736,51 @@ layout: center
 
 # Performance Reasoning
 
-- For me, impossible to make detailed measurements --> I would need game without denuvo and with denuvo
-- denuvo changes a lot, each game is protected differently, even different versions of the game, each integration is different.
-- denuvo has a dedicated team that performs integration into games
-- prior analysis mostly meaningless, has to be looked at for each game invidivually
+- not a performance measurement!
+- measurement requires denuvo-free version (I don't have that)
+- reasoning is based on the hooks
+- denuvo vastly changes for each game
+- analysis for one game likely does not apply to other games
 
-* each of my 2000 hooks prints when it's called
-* if no print occurs, no denuvo verification code runs --> very likely no possibility of performance impacts
-* video a few prints during normal gameplay
-* lots of prints during transition/loadscreen
+---
+
+# Performance Reasoning
+
+- each of the 2000+ hooks prints when it's called
+  - \[MOMO\] OVERHEAD
+- no print → no denuvo verification code runs
+  - → no performance impact possible
+- print → denuvo verification code runs
+  - → impact possible, but unsure how much
 
 ---
 
 # Performance Reasoning
 
 <Youtube id="6JriEmiZ1t0" width="720" height="405" />
+
+---
+
+# Performance Reasoning
+
+- few prints while running / normal gameplay
+  - FPS drops unlikely
+- many prints during transitions
+  - FPS drops possible → irrelevant
+
+<v-click>
+
+- Denuvo is not constantly hammering your system
+- mostly runs during transitions
+- no absolute proof or accurate measurement
+- should only give you a feeling of impact
+
+</v-click>
+<v-click>
+
+→ Denuvo likely does not impact gameplay in Hogwarts Legacy
+
+</v-click>
 
 ---
 
