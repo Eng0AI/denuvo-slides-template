@@ -36,6 +36,7 @@ jobs:
           localDir: "./dist"
           forceSsl: true
           remoteDir: "/web/momo5502.com/public_html/slides/denuvo"
+          options: "--delete"
 
       - name: Purge cache
         uses: jakejarvis/cloudflare-purge-action@master
