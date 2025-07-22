@@ -577,7 +577,7 @@ transition: slide-down
 <div class="flex">
 <div>
 
-- Driver or standalone software that enables OS virtualization (VM)
+- Driver or standalone software for OS virtualization (VMs)
 - Most instructions run on CPU
 - Some are intercepted by Hypervisor
   - Hypervisor can register a callback at the CPU
