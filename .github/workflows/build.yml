@@ -27,7 +27,7 @@ jobs:
         run: npm i && npm run build
 
       - name: Deploy
-        uses: sebastianpopp/ftp-action@v2.0.0
+        uses: sebastianpopp/ftp-action@master
         if: github.event_name == 'push' && (github.ref == 'refs/heads/master')
         with:
           host: ${{ secrets.FTP_SERVER }}
