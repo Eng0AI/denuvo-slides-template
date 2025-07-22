@@ -307,7 +307,8 @@ Collection of features that uniquely identify the PC:
 ```
 
 - Belongs to a fingerprint
-- Only requested from Denuvo servers if fingerprint changed
+- Stored on disk
+  - Online connectivity required for first launch or if fingerprint changes
 - Error if token can't be requested (e.g. no game license):
   <img src="./images/bad-token.png" class="mt-2 rounded-lg">
 
@@ -340,7 +341,7 @@ Collection of features that uniquely identify the PC:
 **Advanced Code Protection:**
 
 - No traditional packing → code remains accessible
-- **Code virtualization** → critical sections run in custom VM
+- **Code virtualization** → token checks run in custom VM
 - **Tight integration** → Denuvo is mixed into game logic
 - **Thousands of checks** → validations everywhere
 
@@ -389,7 +390,7 @@ Three main ways of communication:
 
 # Sogen
 
-- Sogen is a a windows userspace emulator
+- Sogen is a a Windows userspace emulator
 - Provides strong instrumentation capabilities → helps analyzing Denuvo
 - Check it out: <a href="https://sogen.dev" target="_blank">sogen.dev</a>
 
@@ -477,7 +478,6 @@ Easy:
 - ImageSubsystemMinorVersion
 - ProcessParameters -> Environment
   - Denuvo reads random values in the environment variables
-  - Offsets: 0x74, 0x123, 0x1d8, 0x291
 
 ---
 
@@ -577,14 +577,14 @@ transition: slide-down
 <div class="flex">
 <div>
 
-- Driver or standalone Software that enables VMs
-- Most VM instructions run on CPU
+- Driver or standalone software that enables OS virtualization (VM)
+- Most instructions run on CPU
 - Some are intercepted by Hypervisor
   - Hypervisor can register a callback at the CPU
 
 <div v-click>
 
-→ Hypervisor doesn't need to manage VMs
+→ Hypervisor doesn't need to be used for VMs
 
 </div>
 
@@ -655,7 +655,7 @@ layout: center
 
 - --> Advapi32.dll
 - addresses of these values in IAT
-- changing them invalidates the token, so aslr changes on a reboot might invalidate it.
+<!--- changing them invalidates the token, so aslr changes on a reboot might invalidate it.-->
 
 * CryptAcquireContextA
 * CryptGetProvParam
@@ -665,7 +665,7 @@ layout: center
 --> insanely hard to find. why?
 -> regular memory access, nothing special
 -> game reads import table all the time, nothing suspicious
--> usually import is used for execution, not in denuvo case
+-> usually import is used for execution, not in Denuvo case
 
 --> simple to patch
 
@@ -737,9 +737,9 @@ layout: center
 # Performance Reasoning
 
 - not a performance measurement!
-- measurement requires denuvo-free version (I don't have that)
+- measurement requires Denuvo-free version (I don't have that)
 - reasoning is based on the hooks
-- denuvo vastly changes for each game
+- Denuvo vastly changes for each game
 - analysis for one game likely does not apply to other games
 
 ---
@@ -748,9 +748,9 @@ layout: center
 
 - each of the 2000+ hooks prints when it's called
   - \[MOMO\] OVERHEAD
-- no print → no denuvo verification code runs
+- no print → no Denuvo verification code runs
   - → no performance impact possible
-- print → denuvo verification code runs
+- print → Denuvo verification code runs
   - → impact possible, but unsure how much
 
 ---
@@ -792,7 +792,7 @@ layout: center
 - Patching fingerprint is conceptually easy, but takes huge amount of time
   - No real incentive to spend the time
 - As a researcher, you are happy you found the fingerprints, you don't care about patching all of them
-- This makes denuvo so strong
+- This makes Denuvo so strong
   - they make the easy challenge look hard and the hard challenge look easy
 
 ---
