@@ -444,8 +444,6 @@ Three main ways of communication:
 
 **How to patch?**
 
-Easy:
-
 - Denuvo has no integrity checks on API calls
 - just hook all API calls and return constant values
 
@@ -515,16 +513,14 @@ Easy:
 
 # 3. Feature: <span class="text-color-lime">KUSER_SHARED_DATA</span>
 
---> hard to patch
+**How to patch?**
 
-- find all places -> ideally HWBP + exception handler
-- non-linear stack -> wrote a debugger that attaches to the game and traces using HWBP
-- no guarantee i'll ever have all locations
-- dynamic hook creation
-- redirect memory load to fake memory region
-- disassemble all load instruction
-- analyze and replicate memory source (scale-index-base)
-- replicate instruction (xor, add, mov, ...)
+- Find all memory reads
+  - Sampling using hardware breakpoints and debugger
+- Dynamic hook creation at runtime
+  - Disassemble sampled accesses
+  - Build hook that redirects replaces access (xor, add, mov, ...)
+  - Redirect access to fake KUSD
 
 ---
 
@@ -652,24 +648,26 @@ layout: center
 
 # 6. Feature: <span class="text-color-red-500">Import integrity</span>
 
-- --> Advapi32.dll
-- addresses of these values in IAT
-<!--- changing them invalidates the token, so aslr changes on a reboot might invalidate it.-->
+- addresses of imports in IAT are verified
 
-* CryptAcquireContextA
-* CryptGetProvParam
-* GetUserNameW
-* GetVolumeInformationW
+- advapi32.dll
+  * CryptAcquireContextA
+  * CryptGetProvParam
+  * GetUserNameW
+  * GetVolumeInformationW
 
---> insanely hard to find. why?
--> regular memory access, nothing special
--> game reads import table all the time, nothing suspicious
--> usually import is used for execution, not in Denuvo case
+- super hard to find
+  - looks like regular memory access
+  - game reads import table all the time
 
---> simple to patch
+---
 
-- trampolinee at fixed VA that redirects to the original value
-- requires that the VA is available, which it should be
+# 6. Feature: <span class="text-color-red-500">Import integrity</span>
+
+**How to patch?**
+
+- allocate trampoline at fixed memory location
+- jump to original import
 
 ---
 layout: center
