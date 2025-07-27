@@ -171,13 +171,12 @@ layout: center
 
 <div>
 
-- **Anti-tamper solution** by Irdeto
-- **Not a DRM itself** - protects existing DRM systems
+- Anti-tamper solution by Irdeto
+- Not a DRM itself
+  - Protects existing DRM systems
   - Steam, Origin, Epic Games Store, etc.
-- **Used by major publishers**: EA, Ubisoft, Square Enix, Capcom
-- **Controversial**: Loved by publishers, hated by pirates
 
-→ Strongest Game Protection to date
+→ Strongest game protection to date
 
 </div>
 
@@ -293,6 +292,8 @@ Collection of features that uniquely identify the PC:
 - OS Identifiers
 - ...
 
+→ Varies for each protected game
+
 ---
 
 # What is a Denuvo token?
@@ -309,41 +310,32 @@ Collection of features that uniquely identify the PC:
 - Belongs to a fingerprint
 - Stored on disk
   - Online connectivity required for first launch or if fingerprint changes
-- Error if token can't be requested (e.g. no game license):
-  <img src="./images/bad-token.png" class="mt-2 rounded-lg">
+<!--- Error if token can't be requested (e.g. no game license):
+  <img src="./images/bad-token.png" class="mt-2 rounded-lg">-->
 
 ---
 
 # What is the Denuvo token used for?
 
 - Game has two phases:
-  1. Fingerprint collection + Token generation
-  2. Runtime
+  1. Startup: Fingerprint collection + Token generation
+  2. Runtime: Validation
 - Runtime only works with a valid token
 - Game continuously validates your PC during gameplay
   - Reads many fingerprint values at thousands of places
   - Values are likely used to encrypt game data
   - Token contains information to decrypt the data again
-  - If PC doesn't match token, game crashes
+  - Game crashes if PC doesn't match token
 
 ---
 
 # What makes Denuvo so strong?
 
-&nbsp;
+- Custom protection for each game
+- Different fingerprint features
+- Runtime validation at thousands of places
 
-**Custom Protection Per Game:**
-
-- Each game is unique
-- Different fingerprints, patterns, validation
-- No generic crack possible
-
-**Advanced Code Protection:**
-
-- No traditional packing → code remains accessible
-- **Code virtualization** → token checks run in custom VM
-- **Tight integration** → Denuvo is mixed into game logic
-- **Thousands of checks** → validations everywhere
+→ No generic crack possible
 
 ---
 layout: center
@@ -414,7 +406,7 @@ Three main ways of communication:
 **How to find?**
 
 - Breakpoint on every exported function of every DLL
-  - super cheap in the emulator
+  - Super cheap in the emulator
 - Log every API call that was done from Hogwarts Legacy
 
 ---
@@ -445,7 +437,7 @@ Three main ways of communication:
 **How to patch?**
 
 - Denuvo has no integrity checks on API calls
-- just hook all API calls and return constant values
+- Just hook all API calls and return constant values
 
 ---
 
@@ -482,8 +474,8 @@ Three main ways of communication:
 
 **How to patch?**
 
-- unprotect memory and overwrite with constant values
-- can have undesired side effects (e.g. patching OS version)
+- Unprotect memory and overwrite with constant values
+- Can have undesired side effects (e.g. patching OS version)
 
 → don't care, it's just a POC ¯\\\_(ツ)\_/¯
 
@@ -648,7 +640,7 @@ layout: center
 
 # 6. Feature: <span class="text-color-red-500">Import integrity</span>
 
-- addresses of imports in IAT are verified
+- Addresses of imports in IAT are verified
 
 - advapi32.dll
   * CryptAcquireContextA
@@ -656,9 +648,9 @@ layout: center
   * GetUserNameW
   * GetVolumeInformationW
 
-- super hard to find
-  - looks like regular memory access
-  - game reads import table all the time
+- Hard to find
+  - Looks like regular memory access
+  - Game reads import table all the time
 
 ---
 
@@ -666,8 +658,16 @@ layout: center
 
 **How to patch?**
 
-- allocate trampoline at fixed memory location
-- jump to original import
+- Allocate trampoline at fixed memory location
+- Jump to original import
+
+---
+
+# It's running...
+
+... after 5 months
+
+<img class="w-180 m-auto" src="./images/running.png" />
 
 ---
 layout: center
@@ -688,14 +688,6 @@ sogen.dev
 <iframe class="flex-1" src="https://sogen.dev" />
 <span class="w-1 h-1"></span>
 </div>
-
----
-
-# It's running...
-
-... after 5 months
-
-<img class="w-180 m-auto" src="./images/running.png" />
 
 ---
 
@@ -730,21 +722,21 @@ layout: center
 
 # Performance Reasoning
 
-- not a performance measurement!
-- measurement requires Denuvo-free version (I don't have that)
-- reasoning is based on the hooks
+- Not a performance measurement!
+  - Measurement requires Denuvo-free version (I don't have that)
+- Reasoning is based on the hooks
 - Denuvo vastly changes for each game
-- analysis for one game likely does not apply to other games
+- Analysis for one game likely does not apply to other games
 
 ---
 
 # Performance Reasoning
 
-- each of the 2000+ hooks prints when it's called
+- Each of the 2000+ hooks prints when it's called
   - \[MOMO\] OVERHEAD
-- no print → no Denuvo verification code runs
+- No print → no Denuvo verification code runs
   - → no performance impact possible
-- print → Denuvo verification code runs
+- Print → Denuvo verification code runs
   - → impact possible, but unsure how much
 
 ---
@@ -757,17 +749,17 @@ layout: center
 
 # Performance Reasoning
 
-- few prints while running / normal gameplay
+- Few prints while running / normal gameplay
   - FPS drops unlikely
-- many prints during transitions
+- Many prints during transitions
   - FPS drops possible → irrelevant
 
 <v-click>
 
 - Denuvo is not constantly hammering your system
-- mostly runs during transitions
-- no absolute proof or accurate measurement
-- should only give you a feeling of impact
+- Mostly runs during transitions
+- No absolute proof or accurate measurement
+- Should only give you a feeling of impact
 
 </v-click>
 <v-click>
@@ -775,6 +767,12 @@ layout: center
 → Denuvo likely does not impact gameplay in Hogwarts Legacy
 
 </v-click>
+
+---
+layout: center
+---
+
+# Summary
 
 ---
 
