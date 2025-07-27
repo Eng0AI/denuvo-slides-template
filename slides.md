@@ -156,6 +156,7 @@ How to Crack
 - Understanding Denuvo
 - Bypassing Denuvo
 - Performance Reasoning
+- Analysis Demo
 
 ---
 layout: center
@@ -322,7 +323,7 @@ Collection of features that uniquely identify the PC:
   2. Runtime: Validation
 - Runtime only works with a valid token
 - Game continuously validates your PC during gameplay
-  - Reads many fingerprint values at thousands of places
+  - Reads fingerprint values
   - Values are likely used to encrypt game data
   - Token contains information to decrypt the data again
   - Game crashes if PC doesn't match token
@@ -356,10 +357,10 @@ layout: center
 
 **Fingerprint Patching**
 
-- Make Game think it runs on different PC
+- Replay fingerprint features of different PC
 - Hardcode token for that PC
 
-→ Find all fingerprints and patch every use in the game
+→ Find all features and patch every use in the game
 
 </v-clicks>
 
@@ -376,7 +377,7 @@ Three main ways of communication:
 - <span class="text-color-lime">Reading Memory</span>
 - <span class="text-color-sky">Special instructions</span> (CPUID, Syscall, ...)
 
-→ We need a way to easily analyze, instrument and intercept all 3
+→ We need a way to easily analyze all 3
 
 ---
 
@@ -507,11 +508,12 @@ Three main ways of communication:
 
 **How to patch?**
 
+- Overwriting memory does not work
 - Find all memory reads
   - Sampling using hardware breakpoints and debugger
 - Dynamic hook creation at runtime
   - Disassemble sampled accesses
-  - Build hook that redirects replaces access (xor, add, mov, ...)
+  - Assemble stub that redirects access
   - Redirect access to fake KUSD
 
 ---
@@ -616,8 +618,7 @@ transition: slide-down
 **How to patch?**
 
 - Denuvo has mini integrity checks on instructions
-- instruction bytes are read and computed into other calculations
-- bytes need to stay intact → unable to hook
+- Bytes need to stay intact → unable to hook
 - Hypervisor can perform stealth hooking (EPT hooking)
 - Integrity check can not see the hook
 
@@ -668,26 +669,6 @@ layout: center
 ... after 5 months
 
 <img class="w-180 m-auto" src="./images/running.png" />
-
----
-layout: center
----
-
-# Demo
-
-sogen.dev
-
----
-
-<style scoped>
-.slidev-layout {
-    padding: 0px;
-}
-</style>
-<div class="w-[100%] h-[100%] flex flex-col">
-<iframe class="flex-1" src="https://sogen.dev" />
-<span class="w-1 h-1"></span>
-</div>
 
 ---
 
@@ -767,6 +748,26 @@ layout: center
 → Denuvo likely does not impact gameplay in Hogwarts Legacy
 
 </v-click>
+
+---
+layout: center
+---
+
+# Analysis Demo
+
+sogen.dev
+
+---
+
+<style scoped>
+.slidev-layout {
+    padding: 0px;
+}
+</style>
+<div class="w-[100%] h-[100%] flex flex-col">
+<iframe class="flex-1" src="https://sogen.dev" />
+<span class="w-1 h-1"></span>
+</div>
 
 ---
 layout: center
