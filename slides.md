@@ -453,11 +453,10 @@ Easy:
 
 # <span class="opacity-[0.5]">Category:</span> <span class="text-color-lime">Memory Reads</span>
 
-**How to find?**
-
-- Install hook on every memory read in the emulator
-- Skip uninteresting access (stack, heap, loaded modules, ...)
-- Log interesting reads
+- Install memory read hook in the emulator
+- Filter memory reads
+  - Skip uninteresting access (stack, heap, loaded modules, ...)
+  - Log interesting reads
 
 ---
 
@@ -548,7 +547,7 @@ Easy:
 
 # 4. Feature: <span class="text-color-sky">CPUID</span>
 
-- CPUID Leaves
+- CPUID Leaves (eax register)
   - 0x1 → CPU Family, Model, ...
   - 0x80000002 → CPU Brand String (e.g. "Genuine Intel")
   - 0x80000003 → -""-
@@ -722,9 +721,6 @@ sogen.dev
   - Maybe I overlooked features that don't trigger token error?
 
 → 2000+ hooks. We can surely do something with that?
-
-- Print when the hooks are triggered
-- See in which situations Denuvo code runs
 
 ---
 layout: center
