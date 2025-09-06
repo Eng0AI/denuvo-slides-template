@@ -214,17 +214,17 @@ clicks: 13
 
 <div class="flex mt-6 text-shadow-xl"
   v-motion
-  :initial="{ x: 0, y: 300 }"
-  :enter="{ x: 0, y: 300 }"
-  :click-1="{ y: 0 }"
+  :initial="{ opacity: 0 }"
+  :enter="{ opacity: 0 }"
+  :click-1="{ opacity: 1 }"
 >
 <div class="border-3 border-lime bg-lime-400/5 p-4 rounded-lg">
 🎮 Game
 <div class="border-3 border-red-600 bg-red-600/20 rounded-md p-1 m-2"
   v-motion
-  :initial="{ x: 0, y: 300 }"
-  :enter="{ x: 0, y: 300 }"
-  :click-3="{ y: 0 }"
+  :initial="{ x: 0, opacity: 0 }"
+  :enter="{ x: 0, opacity: 0 }"
+  :click-3="{ opacity: 1 }"
   :click-7="{ x: 660 }"
   >
   🔍 Fingerprint
@@ -232,9 +232,9 @@ clicks: 13
 
 <div class="border-3 border-red-600 bg-red-600/20 rounded-md p-1 m-2"
   v-motion
-  :initial="{ x: 0, y: 300 }"
-  :enter="{ x: 0, y: 300 }"
-  :click-5="{ y: 0 }"
+  :initial="{ x: 0, opacity: 0 }"
+  :enter="{ x: 0, opacity: 0 }"
+  :click-5="{ opacity: 1 }"
   :click-7="{ x: 660 }"
 >
   🎟️ Steam Ticket
@@ -242,9 +242,9 @@ clicks: 13
 <div
   class="absolute font-size-[1.2em]"
   v-motion
-  :initial="{ x: 673, y: 300 }"
-  :enter="{ x: 673, y: 300 }"
-  :click-9="{ x: 673, y: -43 }"
+  :initial="{ x: 673, y: -43, opacity: 0 }"
+  :enter="{ x: 673, y: -43, opacity: 0 }"
+  :click-9="{ opacity: 1 }"
 >✅</div>
 <div class="border-3 rounded-md p-1 m-2 opacity-0"
 >
@@ -269,9 +269,9 @@ clicks: 13
 
 <div class="border-3 border-yellow bg-yellow-400/20 rounded-md p-1 m-2"
   v-motion
-  :initial="{ x: 0, y: 300 }"
-  :enter="{ x: 0, y: 300 }"
-  :click-11="{ y: 0 }"
+  :initial="{ x: 0, opacity: 0 }"
+  :enter="{ x: 0, opacity: 0 }"
+  :click-11="{ opacity: 1 }"
   :click-13="{ x: -660 }"
 >
   🔑 Denuvo Token
@@ -422,18 +422,176 @@ layout: center
 # Patching Denuvo
 
 ---
+clicks: 3
+---
 
 # <span class="text-color-yellow">API calls</span>
 
 - Denuvo has no integrity checks on API calls
 - Just hook all API calls and return constant values
 
+<br>
+<div class="flex mt-6 text-shadow-xl relative"
+  v-motion
+  :initial="{ opacity: 0 }"
+  :enter="{ opacity: 0 }"
+  :click-1="{ opacity: 1 }"
+>
+<div class="border-3 border-lime bg-lime-400/5 p-4 rounded-lg">
+Game
+
+<div class="border-3 rounded-md p-2 m-2 opacity-0"
+  >
+  GetUserNameA
+</div>
+</div>
+
+<div class="flex-1">
+</div>
+
+<div class="border-3 border-sky-500 bg-sky-500/5 p-4 rounded-lg">
+Advapi.dll
+
+<div class="border-3 rounded-md p-2 m-2"
+  >
+  GetUserNameA
+</div>
+
+</div>
+
+<div class="flex-1">
+</div>
+
+<div class="border-3 border-yellow bg-yellow-400/5 p-4 rounded-lg"
+  v-motion
+  :initial="{ opacity: 0 }"
+  :enter="{ opacity: 0 }"
+  :click-2="{ opacity: 1 }"
+>
+Hook
+
+<div class="border-3 rounded-md p-2 m-2 border-red-600 bg-red-600/20"
+  >
+  Fake<br>GetUserNameA
+</div>
+</div>
+
+<div class="w-50 absolute top-17 left-41">
+   <div>
+      <div class="border-2 rounded-md m-2 h-0"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate-45 absolute right--1 top--1.5"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate--45 absolute right--1 bottom--1.5"></div>
+   </div>
+</div>
+
+<div class="w-48 absolute top-17 left-126"
+  v-motion
+  :initial="{ opacity: 0 }"
+  :enter="{ opacity: 0 }"
+  :click-3="{ opacity: 1 }"
+>
+   <div>
+      <div class="border-2 rounded-md m-2 h-0"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate-45 absolute right--1 top--1.5"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate--45 absolute right--1 bottom--1.5"></div>
+   </div>
+</div>
+
+</div>
+
+---
+clicks: 4
 ---
 
 # <span class="text-color-lime">Import Integrity</span>
 
 - Allocate trampoline at fixed memory location
 - Jump to original import
+
+<br>
+<div class="flex mt-6 text-shadow-xl relative"
+  v-motion
+  :initial="{ opacity: 0 }"
+  :enter="{ opacity: 0 }"
+  :click-1="{ opacity: 1 }"
+>
+<div class="border-3 border-lime bg-lime-400/5 p-4 rounded-lg">
+Game Import Table
+
+<div class="border-3 rounded-md p-2 m-2 opacity-0"
+  >
+  GetUserNameA
+</div>
+</div>
+
+<div class="flex-1">
+</div>
+
+<div class="border-3 border-yellow bg-yellow-400/5 p-4 rounded-lg"
+  v-motion
+  :initial="{ opacity: 0 }"
+  :enter="{ opacity: 0 }"
+  :click-3="{ opacity: 1 }"
+>
+Trampoline
+
+<div class="border-3 rounded-md p-2 m-2 border-red-600 bg-red-600/20"
+  >
+  0x1300000000
+</div>
+</div>
+
+<div class="flex-1">
+</div>
+
+<div class="border-3 border-sky-500 bg-sky-500/5 p-4 rounded-lg">
+Advapi.dll
+
+<div class="border-3 rounded-md p-2 m-2"
+  >
+  GetUserNameA
+</div>
+
+</div>
+
+<div class="w-133 absolute top-17 left-41"
+  v-motion
+  :initial="{ opacity: 1 }"
+  :enter="{ opacity: 1 }"
+  :click-2="{ opacity: 0 }">
+   <div>
+      <div class="border-2 rounded-md m-2 h-0"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate-45 absolute right--1 top--1.5"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate--45 absolute right--1 bottom--1.5"></div>
+   </div>
+</div>
+
+<div class="w-50 absolute top-17 left-41"
+  v-motion
+  :initial="{ opacity: 0 }"
+  :enter="{ opacity: 0 }"
+  :click-4="{ opacity: 1 }">
+   <div>
+      <div class="border-2 rounded-md m-2 h-0"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate-45 absolute right--1 top--1.5"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate--45 absolute right--1 bottom--1.5"></div>
+   </div>
+</div>
+
+<div class="w-48 absolute top-17 left-126"
+  v-motion
+  :initial="{ opacity: 0 }"
+  :enter="{ opacity: 0 }"
+  :click-4="{ opacity: 1 }"
+>
+   <div>
+      <div class="border-2 rounded-md m-2 h-0"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate-45 absolute right--1 top--1.5"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate--45 absolute right--1 bottom--1.5"></div>
+   </div>
+</div>
+
+</div>
 
 ---
 
