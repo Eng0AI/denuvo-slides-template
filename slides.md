@@ -154,9 +154,9 @@ Reverse Engineering
 # Agenda
 
 - Understanding Denuvo
-- Bypassing Denuvo
+- Analyzing Denuvo
+- Patching Denuvo
 - Performance Reasoning
-- Analysis Demo
 
 ---
 layout: center
@@ -345,7 +345,7 @@ Collection of features that uniquely identify the PC:
 layout: center
 ---
 
-# Bypassing Denuvo
+# Analyzing Denuvo
 
 ---
 
@@ -404,14 +404,6 @@ Three main ways of communication:
 </div>
 
 ---
-layout: center
----
-
-# Analysis Demo
-
-sogen.dev
-
----
 
 <style scoped>
 .slidev-layout {
@@ -424,15 +416,28 @@ sogen.dev
 </div>
 
 ---
+layout: center
+---
 
-# How to patch: <span class="text-color-yellow">API calls</span>
+# Patching Denuvo
+
+---
+
+# <span class="text-color-yellow">API calls</span>
 
 - Denuvo has no integrity checks on API calls
 - Just hook all API calls and return constant values
 
 ---
 
-# How to patch: <span class="text-color-lime">Process Environment Block</span>
+# <span class="text-color-lime">Import Integrity</span>
+
+- Allocate trampoline at fixed memory location
+- Jump to original import
+
+---
+
+# <span class="text-color-lime">Process Environment Block</span>
 
 - Unprotect memory and overwrite with constant values
 - Can have undesired side effects (e.g. patching OS version)
@@ -441,7 +446,7 @@ sogen.dev
 
 ---
 
-# How to patch: <span class="text-color-lime">KUSER_SHARED_DATA</span>
+# <span class="text-color-lime">KUSER_SHARED_DATA</span>
 
 - Overwriting memory does not work
 - Find all memory reads
@@ -455,7 +460,7 @@ sogen.dev
 transition: slide-up
 ---
 
-# How to patch: <span class="text-color-sky">CPUID</span>
+# <span class="text-color-sky">CPUID</span>
 
 - Too lazy to redo what was done for KUSER_SHARED_DATA
 
@@ -497,7 +502,7 @@ transition: slide-down
 
 ---
 
-# How to patch: <span class="text-color-sky">Inline syscalls</span>
+# <span class="text-color-sky">Inline syscalls</span>
 
 - Denuvo has mini integrity checks on instructions
 - Bytes need to stay intact → unable to hook
@@ -507,42 +512,11 @@ transition: slide-down
 → Want to know more? <a href="https://momo5502.com/ept" target="_blank">momo5502.com/ept</a>
 
 ---
-layout: center
----
 
-# The last feature...
+# <span class="text-color-sky">Undefined Instructions</span>
 
-<div class="text-center">
-<img class="w50 m-auto rounded-md drop-shadow-md" src="./images/insanity.jpg">
-
-<span class="opacity-[0.7]">...took me 3 months to find</span>
-
-</div>
-
----
-
-# 6. Feature: <span class="text-color-red-500">Import integrity</span>
-
-- Addresses of imports in IAT are verified
-
-- advapi32.dll
-  - CryptAcquireContextA
-  - CryptGetProvParam
-  - GetUserNameW
-  - GetVolumeInformationW
-
-- Hard to find
-  - Looks like regular memory access
-  - Game reads import table all the time
-
----
-
-# 6. Feature: <span class="text-color-red-500">Import integrity</span>
-
-**How to patch?**
-
-- Allocate trampoline at fixed memory location
-- Jump to original import
+- e.g. IDIV (flags may differ depending on CPU)
+- not patched → hardcode token for each variant
 
 ---
 
@@ -649,6 +623,16 @@ layout: center
 - As a researcher, you are happy you found the fingerprints, you don't care about patching all of them
 - This makes Denuvo so strong
   - they make the easy challenge look hard and the hard challenge look easy
+
+---
+
+# Outlook
+
+- Managed to reliably bypass Denuvo in Black Myth: Wukong
+- Can't share details at the moment 🙁
+
+<br>
+<img class="w-150 m-auto rounded-md drop-shadow-md" src="./images/wukong.png">
 
 ---
 layout: center
