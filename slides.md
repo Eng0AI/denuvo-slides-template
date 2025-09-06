@@ -205,7 +205,7 @@ clicks: 13
 
 1. Hardware fingerprint is generated → Computername + Username + ...
 2. Steam ticket generation → Proof of game ownership
-3. Fingerprint & Steam ticket is sent to Denuvo server
+3. Fingerprint & Steam ticket is sent to Denuvo Server
 4. Server validates steam ticket → Do you really own the game?
 5. Server generates Denuvo token for the fingerprint
 6. Game runs with Denuvo token
@@ -218,9 +218,9 @@ clicks: 13
   :enter="{ x: 0, y: 300 }"
   :click-1="{ y: 0 }"
 >
-<div class="border-3 border-lime p-4 rounded-lg">
+<div class="border-3 border-lime bg-lime-400/5 p-4 rounded-lg">
 🎮 Game
-<div class="border-3 border-red-600 rounded-md p-1 m-2"
+<div class="border-3 border-red-600 bg-red-600/20 rounded-md p-1 m-2"
   v-motion
   :initial="{ x: 0, y: 300 }"
   :enter="{ x: 0, y: 300 }"
@@ -230,7 +230,7 @@ clicks: 13
   🔍 Fingerprint
 </div>
 
-<div class="border-3 border-red-600 rounded-md p-1 m-2"
+<div class="border-3 border-red-600 bg-red-600/20 rounded-md p-1 m-2"
   v-motion
   :initial="{ x: 0, y: 300 }"
   :enter="{ x: 0, y: 300 }"
@@ -255,7 +255,7 @@ clicks: 13
 <div class="flex-1">
 </div>
 
-<div class="border-3 border-sky-500 p-4 rounded-lg">
+<div class="border-3 border-sky-500 bg-sky-500/5 p-4 rounded-lg">
 🌐 Denuvo Server
 
 <div class="border-3 rounded-md p-1 m-2 opacity-0"
@@ -267,7 +267,7 @@ clicks: 13
   🎟️ Steam Ticket
 </div>
 
-<div class="border-3 border-yellow rounded-md p-1 m-2"
+<div class="border-3 border-yellow bg-yellow-400/20 rounded-md p-1 m-2"
   v-motion
   :initial="{ x: 0, y: 300 }"
   :enter="{ x: 0, y: 300 }"
@@ -311,8 +311,11 @@ Collection of features that uniquely identify the PC:
 - Belongs to a fingerprint
 - Stored on disk
   - Online connectivity required for first launch or if fingerprint changes
-<!--- Error if token can't be requested (e.g. no game license):
-  <img src="./images/bad-token.png" class="mt-2 rounded-lg">-->
+
+<!--
+- Error if token can't be requested (e.g. no game license):
+  <img src="./images/bad-token.png" class="mt-2 rounded-lg">
+-->
 
 ---
 
@@ -523,10 +526,10 @@ layout: center
 - Addresses of imports in IAT are verified
 
 - advapi32.dll
-  * CryptAcquireContextA
-  * CryptGetProvParam
-  * GetUserNameW
-  * GetVolumeInformationW
+  - CryptAcquireContextA
+  - CryptGetProvParam
+  - GetUserNameW
+  - GetVolumeInformationW
 
 - Hard to find
   - Looks like regular memory access
