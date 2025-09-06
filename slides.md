@@ -342,14 +342,8 @@ Collection of features that uniquely identify the PC:
 → No generic crack possible
 
 ---
-layout: center
----
 
-# Analyzing Denuvo
-
----
-
-# How to approach this?
+# How to bypass Denuvo?
 
 <v-clicks>
 
@@ -366,6 +360,12 @@ layout: center
 → Find all features and patch every use in the game
 
 </v-clicks>
+
+---
+layout: center
+---
+
+# Analyzing Denuvo
 
 ---
 
