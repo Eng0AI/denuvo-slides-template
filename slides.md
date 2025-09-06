@@ -4,7 +4,7 @@ theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
 # some information about your slides (markdown enabled)
-title: How to Crack Denuvo in Hogwarts Legacy
+title: Reverse Engineering Denuvo in Hogwarts Legacy
 class: text-center
 # https://sli.dev/features/drawing
 drawings:
@@ -128,7 +128,7 @@ img.main-background {
 </style>
 <img class="main-background" src="./images/hwl.webp" />
 <h1 class="mt--70 backdrop-blur-xl p-9 text-shadow-3xl">
-How to Crack
+Reverse Engineering
 <br>
 <img class="denuvo-logo" src="./images/denuvo-logo.png" /> in <img class="hwl-logo" src="./images/hwl-logo.png" />
 </h1>
@@ -401,79 +401,35 @@ Three main ways of communication:
 </div>
 
 ---
+layout: center
+---
 
-# <span class="opacity-[0.5]">Category:</span> <span class="text-color-yellow">API calls</span>
+# Analysis Demo
 
-**How to find?**
-
-- Breakpoint on every exported function of every DLL
-  - Super cheap in the emulator
-- Log every API call that was done from Hogwarts Legacy
+sogen.dev
 
 ---
 
-# 1. Feature: <span class="text-color-yellow">API calls</span>
-
-#### Emulator logged:
-
-<img class="mt-4 rounded-lg border-2 border-yellow" src="./images/api-calls.png" />
-
----
-
-# 1. Feature: <span class="text-color-yellow">API calls</span>
-
-- GetVolumeInformationW
-- GetUserNameW
-- GetComputerNameW
-- CryptGetProvParam
-- CryptAcquireContextA
-- CryptAcquireContextW
-- CryptEnumProvidersW
-- ExpandEnvironmentStringsA &rarr; %COMPUTERNAME%
+<style scoped>
+.slidev-layout {
+    padding: 0px;
+}
+</style>
+<div class="w-[100%] h-[100%] flex flex-col">
+<iframe class="flex-1" src="https://sogen.dev" />
+<span class="w-1 h-1"></span>
+</div>
 
 ---
 
-# 1. Feature: <span class="text-color-yellow">API calls</span>
-
-**How to patch?**
+# How to patch: <span class="text-color-yellow">API calls</span>
 
 - Denuvo has no integrity checks on API calls
 - Just hook all API calls and return constant values
 
 ---
 
-# <span class="opacity-[0.5]">Category:</span> <span class="text-color-lime">Memory Reads</span>
-
-- Install memory read hook in the emulator
-- Filter memory reads
-  - Skip uninteresting access (stack, heap, loaded modules, ...)
-  - Log interesting reads
-
----
-
-# 2. Feature: <span class="text-color-lime">Process Environment Block</span>
-
-#### Emulator logged:
-
-<img class="mt-4 rounded-lg border-2 border-lime" src="./images/peb.png" />
-
----
-
-# 2. Feature: <span class="text-color-lime">Process Environment Block</span>
-
-- OSMajorVersion
-- OSMinorVersion
-- NumberOfProcessors
-- ImageSubsystemMajorVersion
-- ImageSubsystemMinorVersion
-- ProcessParameters -> Environment
-  - Denuvo reads random values in the environment variables
-
----
-
-# 2. Feature: <span class="text-color-lime">Process Environment Block</span>
-
-**How to patch?**
+# How to patch: <span class="text-color-lime">Process Environment Block</span>
 
 - Unprotect memory and overwrite with constant values
 - Can have undesired side effects (e.g. patching OS version)
@@ -482,31 +438,7 @@ Three main ways of communication:
 
 ---
 
-# 3. Feature: <span class="text-color-lime">KUSER_SHARED_DATA</span>
-
-#### Emulator also logged:
-
-<img class="mt-4 rounded-lg border-2 border-lime" src="./images/kusd.png" />
-
----
-
-# 3. Feature: <span class="text-color-lime">KUSER_SHARED_DATA</span>
-
-- NtProductType
-- ActiveProcessorCount
-- SuiteMask
-- ProductTypeIsValid
-- NtMajorVersion
-- NtMinorVersion
-- NtBuildNumber
-- ProcessorFeatures
-- NumberOfPhysicalPages
-
----
-
-# 3. Feature: <span class="text-color-lime">KUSER_SHARED_DATA</span>
-
-**How to patch?**
+# How to patch: <span class="text-color-lime">KUSER_SHARED_DATA</span>
 
 - Overwriting memory does not work
 - Find all memory reads
@@ -517,41 +449,10 @@ Three main ways of communication:
   - Redirect access to fake KUSD
 
 ---
-
-# <span class="opacity-[0.5]">Category:</span> <span class="text-color-sky">Special Instructions</span>
-
-**How to find?**
-
-- Emulator supports hooks for special instructions (cpuid, syscall, rdtsc, ...)
-- Log interesting instructions executed by Hogwarts Legacy
-
----
-
-# 4. Feature: <span class="text-color-sky">CPUID</span>
-
-#### Emulator logged:
-
-<img class="mt-4 rounded-lg border-2 border-sky" src="./images/cpuid.png" />
-
----
-
-# 4. Feature: <span class="text-color-sky">CPUID</span>
-
-- CPUID Leaves (eax register)
-  - 0x1 → CPU Family, Model, ...
-  - 0x80000002 → CPU Brand String (e.g. "Genuine Intel")
-  - 0x80000003 → -""-
-  - 0x80000004 → -""-
-
-→ Leaf 0x1 probably used to conditionally enable other features (xgetbv?)
-
----
 transition: slide-up
 ---
 
-# 4. Feature: <span class="text-color-sky">CPUID</span>
-
-**How to patch?**
+# How to patch: <span class="text-color-sky">CPUID</span>
 
 - Too lazy to redo what was done for KUSER_SHARED_DATA
 
@@ -593,29 +494,7 @@ transition: slide-down
 
 ---
 
-# 5. Feature: <span class="text-color-sky">Inline syscalls</span>
-
-#### Emulator logged:
-
-<img class="mt-4 rounded-lg border-2 border-sky" src="./images/syscall.png" />
-
----
-
-# 5. Feature: <span class="text-color-sky">Inline syscalls</span>
-
-- NtQuerySystemInformation → SystemBasicInformation
-  - NumberOfProcessors
-  - NumberOfPhysicalPages
-  - TimerResolution
-  - ...
-
-→ NTDLL exports are parsed to find syscall ID
-
----
-
-# 5. Feature: <span class="text-color-sky">Inline syscalls</span>
-
-**How to patch?**
+# How to patch: <span class="text-color-sky">Inline syscalls</span>
 
 - Denuvo has mini integrity checks on instructions
 - Bytes need to stay intact → unable to hook
@@ -748,26 +627,6 @@ layout: center
 → Denuvo likely does not impact gameplay in Hogwarts Legacy
 
 </v-click>
-
----
-layout: center
----
-
-# Analysis Demo
-
-sogen.dev
-
----
-
-<style scoped>
-.slidev-layout {
-    padding: 0px;
-}
-</style>
-<div class="w-[100%] h-[100%] flex flex-col">
-<iframe class="flex-1" src="https://sogen.dev" />
-<span class="w-1 h-1"></span>
-</div>
 
 ---
 layout: center
