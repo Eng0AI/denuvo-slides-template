@@ -164,6 +164,10 @@ layout: center
 
 # Understanding Denuvo
 
+<div class="text-center">
+<img class="w50 m-auto rounded-md drop-shadow-md" src="./images/understand-cat.jpg">
+</div>
+
 ---
 
 # What is Denuvo?
@@ -177,7 +181,7 @@ layout: center
   - Protects existing DRM systems
   - Steam, Origin, Epic Games Store, etc.
 
-→ Strongest game protection to date
+→ One of the strongest game protection to date
 
 </div>
 
@@ -367,6 +371,10 @@ layout: center
 
 # Analyzing Denuvo
 
+<div class="text-center">
+<img class="w50 m-auto rounded-md drop-shadow-md" src="./images/analysis-cat.jpg">
+</div>
+
 ---
 
 # How to find fingerprint features?
@@ -421,6 +429,13 @@ layout: center
 
 # Patching Denuvo
 
+<div class="text-center">
+<img class="w50 m-auto rounded-md drop-shadow-md" src="./images/patching-cat.jpg">
+
+<span class="opacity-[0.7] ">A Proof of Concept</span>
+
+</div>
+
 ---
 clicks: 3
 ---
@@ -438,7 +453,7 @@ clicks: 3
   :click-1="{ opacity: 1 }"
 >
 <div class="border-3 border-lime bg-lime-400/5 p-4 rounded-lg">
-Game
+Denuvo
 
 <div class="border-3 rounded-md p-2 m-2 opacity-0"
   >
@@ -505,8 +520,10 @@ clicks: 4
 
 # <span class="text-color-lime">Import Integrity</span>
 
-- Allocate trampoline at fixed memory location
+- Allocate trampoline at fixed memory location (for each import)
 - Jump to original import
+
+→ All import addresses are always the same
 
 <br>
 <div class="flex mt-6 text-shadow-xl relative"
@@ -692,7 +709,7 @@ transition: slide-down
 
 ### No.
 
-<img class="w-140 mt-4 rounded-md" src="./images/no-time.webp" />
+<img class="h-80 mt-4 rounded-md" src="./images/frustrated-cat.png" />
 </v-click>
 
 ---
@@ -712,6 +729,10 @@ layout: center
 ---
 
 # Performance Reasoning
+
+<div class="text-center">
+<img class="w50 m-auto rounded-md drop-shadow-md" src="./images/performance-cat.jpg">
+</div>
 
 ---
 
@@ -768,6 +789,10 @@ layout: center
 ---
 
 # Summary
+
+<div class="text-center">
+<img class="w50 m-auto rounded-md drop-shadow-md" src="./images/summary-cat.jpg">
+</div>
 
 ---
 
