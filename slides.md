@@ -790,6 +790,12 @@ layout: center
 
 # Summary
 
+<style scoped>
+h1 {
+  text-align: center;
+}
+</style>
+
 <div class="text-center">
 <img class="w50 m-auto rounded-md drop-shadow-md" src="./images/summary-cat.jpg">
 </div>
