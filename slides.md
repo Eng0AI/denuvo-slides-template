@@ -180,10 +180,6 @@ layout: center
 
 # What is Denuvo?
 
-<div class="flex" m="t-2">
-
-<div>
-
 - Anti-tamper solution by Irdeto
 - Not a DRM itself
   - Protects existing DRM systems
@@ -191,20 +187,42 @@ layout: center
 
 → One of the strongest game protection to date
 
+<br>
+<div class="flex mt-6 text-shadow-xl relative">
+<div class="border-3 border-lime bg-lime-400/5 p-4 rounded-lg">
+🎮 Game Executable
 </div>
 
-<div class="text-center flex-1">
-
-```mermaid
-flowchart BT
-    game(🎮 Game Executable)
-    drm("🔒 DRM Layer (Steam)")
-    denuvo(🛡️ Denuvo Anti-Tamper)
-    drm --> game
-    denuvo --> drm
-```
-
+<div class="flex-1">
 </div>
+
+<div class="border-3 border-sky-500 bg-sky-500/5 p-4 rounded-lg">
+🔒 DRM Layer (Steam)
+</div>
+
+<div class="flex-1">
+</div>
+
+<div class="border-3 border-yellow bg-yellow-400/5 p-4 rounded-lg">
+🛡️ Denuvo Anti-Tamper
+</div>
+
+<div class="w-29 absolute top-6 left-50">
+   <div>
+      <div class="border-2 rounded-md m-2 h-0"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate--45 absolute left--1 top--1.5"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate-45 absolute left--1 bottom--1.5"></div>
+   </div>
+</div>
+
+<div class="w-28 absolute top-6 left-132">
+   <div>
+      <div class="border-2 rounded-md m-2 h-0"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate--45 absolute left--1 top--1.5"></div>
+      <div class="border-2 rounded-md m-2 h-0 w-5 rotate-45 absolute left--1 bottom--1.5"></div>
+   </div>
+</div>
+
 </div>
 
 ---
