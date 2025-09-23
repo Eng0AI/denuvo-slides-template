@@ -53,8 +53,8 @@ mdc: true
 .macos-button {
   display: inline-block;
   border-radius: 50%;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   margin: auto;
   margin-left: 6px;
 }
@@ -74,13 +74,21 @@ mdc: true
 .macos-url-bar {
   flex: 1;
   background: #565656;
-  margin: 8px;
-  font-size: 0.6em;
+  margin: 7px;
+  font-size: 0.5em;
   margin-left: 25px;
   border-radius: 4px;
   padding: 4px;
   padding-left: 6px;
   font-family: monospace;
+  text-decoration: none;
+}
+
+.macos-url-bar, .macos-url-bar:hover, .macos-url-bar:visited, .macos-url-bar:focus, .macos-url-bar:active  {
+  text-decoration: none !important;
+  color: inherit !important;
+  outline: 0 !important;
+  border: 0 !important;
 }
 
 .scaled-frame {
@@ -325,11 +333,11 @@ Collection of features that uniquely identify the PC:
 
 # What is the Denuvo token used for?
 
-- Game has two phases:
+- Denuvo has two phases:
   1. Startup: Fingerprint collection + Token generation
   2. Runtime: Validation
 - Runtime only works with a valid token
-- Game continuously validates your PC during gameplay
+- Denuvo continuously validates your PC during gameplay
   - Reads fingerprint values
   - Values are likely used to encrypt game data
   - Token contains information to decrypt the data again
@@ -339,9 +347,10 @@ Collection of features that uniquely identify the PC:
 
 # What makes Denuvo so strong?
 
-- Custom protection for each game
-- Different fingerprint features
-- Runtime validation at thousands of places
+- Individual protection for each game
+- Varying fingerprint features
+- Strong integration into the game
+  - Runtime validation at thousands of places
 
 → No generic crack possible
 
@@ -394,23 +403,26 @@ Three main ways of communication:
 
 # Sogen
 
-- Sogen is a a Windows userspace emulator
-- Provides strong instrumentation capabilities → helps analyzing Denuvo
-- Check it out: <a href="https://sogen.dev" target="_blank">sogen.dev</a>
+- Windows userspace emulator - <a href="https://sogen.dev" target="_blank">sogen.dev</a>
+- Emulated CPU, memory, ...
+- Strong instrumentation capabilities
+- Logs anything _suspicious_
 
 <div class="m-auto mt-4 w-150 macos-window shadow-lg">
 <div class="macos-bar">
   <span class="macos-button macos-close"></span>
   <span class="macos-button macos-minimize"></span>
   <span class="macos-button macos-maximize"></span>
-  <span class="macos-url-bar"><span class="text-color-green">https://</span>sogen.dev</span>
+  <a class="macos-url-bar" href="https://sogen.dev" target="_blank"><span class="text-color-green">https://</span>sogen.dev</a>
 </div>
 <!--<img src="./images/sogen.png" />-->
-<div class="h-70 w-full overflow-hidden">
+<div class="h-65 w-full overflow-hidden">
 <iframe class="scaled-frame" src="https://sogen.dev"></iframe>
 </div>
 </div>
 
+---
+disabled: true
 ---
 
 <style scoped>
@@ -749,11 +761,13 @@ layout: center
 # Performance Reasoning
 
 - Each of the 2000+ hooks prints when it's called
-  - \[MOMO\] OVERHEAD
-- No print → no Denuvo verification code runs
-  - → no performance impact possible
-- Print → Denuvo verification code runs
-  - → impact possible, but unsure how much
+  - `[MOMO] OVERHEAD`
+- No print
+  - no Denuvo verification code runs
+  - no performance impact possible
+- Print
+  - Denuvo verification code runs
+  - impact possible, but unclear how much
 
 ---
 
