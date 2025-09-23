@@ -750,7 +750,7 @@ transition: slide-down
   - Sampling KUSD may miss values
   - Patching CPUID & PEB destabilizes system
   - Syscall patches likely also incomplete
-  - Maybe I overlooked features that don't trigger token error?
+  - Maybe I overlooked something?
 
 → 2000+ hooks. We can surely do something with that?
 
