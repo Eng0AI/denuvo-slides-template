@@ -695,6 +695,7 @@ transition: slide-down
 
 - Just register callback (VM exit handler)
 - Intercept CPUID VM exit → patch return values
+- Also patches xgetbv
 
 → Can also have undesired consequences
 
@@ -718,10 +719,13 @@ transition: slide-down
 
 ---
 
-# <span class="text-color-sky">Undefined Instructions</span>
+# <span class="text-color-purple">Other Features</span>
 
-- e.g. IDIV (flags may differ depending on CPU)
-- not patched → hardcode token for each variant
+- ntdll reads
+  - patched by inserting a fake DLL into mapped modules
+- undefined instruction behaviour
+  - e.g. IDIV (flags may differ depending on CPU)
+  - not present in my HogwartsLegacy version
 
 ---
 
