@@ -185,7 +185,7 @@ layout: center
   - Protects existing DRM systems
   - Steam, Origin, Epic Games Store, etc.
 
-→ One of the strongest game protection to date
+→ One of the strongest protections to date
 
 <br>
 <div class="flex mt-6 text-shadow-xl relative">
