@@ -853,7 +853,7 @@ h1 {
 
 # Outlook
 
-- Managed to reliably bypass Denuvo in Black Myth: Wukong
+- Maybe managed to reliably bypass Denuvo in Black Myth: Wukong
 - Can't share details at the moment 🙁
 
 <br>
