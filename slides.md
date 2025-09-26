@@ -355,7 +355,7 @@ Collection of features that uniquely identify the PC:
   1. Startup: Fingerprint collection + Token generation
   2. Runtime: Validation
 - Runtime only works with a valid token
-- Denuvo continuously validates your PC during gameplay
+- Denuvo continuously validates your PC during runtime (outside render loop)
   - Reads fingerprint values
   - Values are likely used to encrypt game data
   - Token contains information to decrypt the data again
