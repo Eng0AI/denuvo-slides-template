@@ -1,11 +1,8 @@
-# Welcome to [Slidev](https://github.com/slidevjs/slidev)!
+# Reverse Engineering Denuvo in Hogwarts Legacy
 
-To start the slide show:
+The source of the slides for my talk at Navaja Negra 2025.
 
-- `pnpm install`
-- `pnpm dev`
-- visit <http://localhost:3030>
+The slides can be found [here](https://momo5502.com/slides/denuvo).
 
-Edit the [slides.md](./slides.md) to see the changes.
-
-Learn more about Slidev at the [documentation](https://sli.dev/).
+The talk can be found here:  
+<a href="https://www.youtube.com/watch?v=RkodCUEmiuA"><img src="https://img.youtube.com/vi/RkodCUEmiuA/maxresdefault.jpg" width="500px" /></a>
